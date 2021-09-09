@@ -12,7 +12,6 @@ if ($mysqli -> connect_errno) {
   echo "Failed to connect to MySQL: " . $mysqli -> connect_error;
   exit();
 }
-
 // Perform query
 if ($result = $mysqli -> query("SELECT * FROM `user` WHERE `username` LIKE '$user' AND `pasword` LIKE '$pass' AND `is_active` = 1 ")) {
     if ($reg = $result->fetch_array()) {
@@ -21,6 +20,7 @@ if ($result = $mysqli -> query("SELECT * FROM `user` WHERE `username` LIKE '$use
         $_SESSION["role_id"]=$reg['role_id'];
         $_SESSION["campana_id"]=$reg['campana_id'];
         $_SESSION["url_image"]=$reg['url_image'];
+        $_SESSION["update_password"]=$reg['update_password'];
         header('Location: ./router.php');
         exit;
     }else {

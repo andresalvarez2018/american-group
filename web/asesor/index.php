@@ -7,6 +7,8 @@
     }
 
     $nombre_usuario=$_SESSION['user'];
+    $id_usuario=$_SESSION['id'];
+    $campana_id=$_SESSION['campana_id'];
     $mysqli = new mysqli("db","db_american_group","4m3r1c4n2021","db");
     $hoy = date("Y-m-d H:i:s");
 

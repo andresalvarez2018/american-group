@@ -5,6 +5,11 @@
         header('Location: ../login/index.php');
         exit;
     }
+
+    if ($_SESSION['update_password'] == "1") {
+        header('Location: ../login/update_password.php');
+        exit;
+    }
     
     $role_id=$_SESSION["role_id"];
 

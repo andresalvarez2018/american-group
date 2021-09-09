@@ -187,7 +187,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="./backlog.php" class="nav-link ">
+                <a href="./backlog.php" class="nav-link">
                     <i class="nav-icon far fa-bookmark"></i>
                     <p>Backlog</p>
                 </a>
@@ -237,10 +237,53 @@
             <!-- Info boxes -->
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Formulario consulta</h3>
+                    <h3 class="card-title">Consulta</h3>
                 </div>
                 <!-- /.card-header -->
                   
+                    <table id="list_usuarios" class="table table-bordered table-striped">
+                        <thead>
+                            <tr>
+                                <th>Nombre Completo</th>
+                                <th>Identificación</th>
+                                <th>Fecha Estado</th>
+                                <th>Name</th>
+                                <th>**</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        <?php
+                            if ($result = $mysqli -> query("SELECT cr.id,cr.name,cr.identification,sso.created_at,s.name as estado FROM central_risk as cr inner join scheduling_occidente as so on so.central_risk_id=cr.id inner join scheduling_status_occidente as sso on so.id=sso.scheduling_id inner join status as s on s.id=sso.status_id where  sso.current=1 ")) {
+                                while ($reg = $result->fetch_array()) {
+                                ?>
+                                <tr>
+                                    <td><?php echo $reg['name'] ?></td>
+                                    <td><?php echo $reg['identification'] ?></td>
+                                    <td><?php echo $reg['created_at'] ?></td>
+                                    <td><?php echo $reg['estado'] ?></td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="#" class="btn btn-info" data-toggle="modal" data-target="#modal-xl" onclick="fetch_form(<?php echo $reg['id'] ?>)"><i class="fas fa-eye"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                 <?php
+                                }
+                                // Free result set
+                                $result -> free_result();
+                            }
+                        ?>    
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <th>Nombre Completo</th>
+                                <th>Identificación</th>
+                                <th>Fecha Estado</th>
+                                <th>Name</th>
+                                <th>**</th>
+                            </tr>
+                        </tfoot>
+                    </table>
             </div>
             <!-- /.row -->
         </div><!--/. container-fluid -->
@@ -266,23 +309,23 @@
 </div>
 <!-- ./wrapper -->
 <div class="modal fade" id="modal-xl" style="display: none;" aria-hidden="true">
-<div class="modal-dialog modal-xl" style="max-width: 90% !important;">
+  <div class="modal-dialog modal-xl" style="max-width: 90% !important;">
     <div class="modal-content">
-    <div class="modal-header">
-        <h4 class="modal-title">Información del cliente</h4>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-        <span aria-hidden="true">×</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        <div id="fecth_data"></div>
-    </div>
-    <div class="modal-footer justify-content-between">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-    </div>
+      <div class="modal-header">
+          <h4 class="modal-title">Información del cliente</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+          </button>
+      </div>
+      <div class="modal-body">
+          <div id="fecth_data"></div>
+      </div>
+      <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+      </div>
     </div>
     <!-- /.modal-content -->
-</div>
+  </div>
 <!-- /.modal-dialog -->
 </div>
 <!-- REQUIRED SCRIPTS -->
