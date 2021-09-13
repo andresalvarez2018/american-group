@@ -26,6 +26,10 @@
             header('Location: ../admin/index.php');
             exit;    
         break;
+        case '3':
+            header('Location: ../supervisor/index.php');
+            exit;    
+        break;
         
     }
 

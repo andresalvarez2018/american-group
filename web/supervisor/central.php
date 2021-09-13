@@ -172,34 +172,28 @@
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-        <li class="nav-header">Menu</li>
-            <li class="nav-item">
-                <a href="./gestionar.php" class="nav-link">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <li class="nav-header">Menu</li>
+            <li class="nav-item active">
+                <a href="./index.php" class="nav-link ">
                     <i class="nav-icon fas fa-tasks"></i>
-                    <p>Gestionar</p>
+                    <p>Dashboard</p>
+                </a>
+            </li>
+            <li class="nav-item ">
+                <a href="./central.php" class="nav-link active">
+                    <i class="nav-icon fas fa-code-branch"></i>
+                    <p>Central de Riesgo</p>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="./ventas.php" class="nav-link ">
-                    <i class="nav-icon fas fa-bookmark"></i>
-                    <p>Ventas</p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="./backlog.php" class="nav-link">
-                    <i class="nav-icon far fa-bookmark"></i>
-                    <p>Backlog</p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="./consulta.php" class="nav-link active">
-                    <i class="nav-icon fas fa-search"></i>
+                <a href="./consulta.php" class="nav-link">
+                    <i class="nav-icon fas fa-users"></i>
                     <p>Consulta</p>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="./chat.php" class="nav-link">
+                <a href="./chat.php" class="nav-link ">
                     <i class="nav-icon fas fa-comments"></i>
                     <p>Chat</p>
                 </a>
@@ -218,12 +212,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Consulta</h1>
+            <h1 class="m-0">Central Riesgo</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="../controladores/router.php">Home</a></li>
-              <li class="breadcrumb-item active">Consulta</li>
+              <li class="breadcrumb-item active">Central Riesgo</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -237,7 +231,7 @@
             <!-- Info boxes -->
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Consulta</h3>
+                    <h3 class="card-title">Listado de Central Riesgo  </h3>
                 </div>
                 <!-- /.card-header -->
                   
@@ -253,25 +247,25 @@
                         </thead>
                         <tbody>
                         <?php
-                          if ($result = $mysqli -> query("SELECT cr.id,cr.name,cr.identification,sso.created_at,s.name as estado FROM central_risk as cr inner join scheduling_occidente as so on so.central_risk_id=cr.id inner join scheduling_status_occidente as sso on so.id=sso.scheduling_id inner join status as s on s.id=sso.status_id where  sso.current=1 ")) {
-                              while ($reg = $result->fetch_array()) {
-                              ?>
-                              <tr>
-                                  <td><?php echo $reg['name'] ?></td>
-                                  <td><?php echo $reg['identification'] ?></td>
-                                  <td><?php echo $reg['created_at'] ?></td>
-                                  <td><?php echo $reg['estado'] ?></td>
-                                  <td>
-                                      <div class="btn-group btn-group-sm">
-                                          <a href="#" class="btn btn-info" data-toggle="modal" data-target="#modal-xl" onclick="fetch_form(<?php echo $reg['id'] ?>)"><i class="fas fa-eye"></i></a>
-                                      </div>
-                                  </td>
-                              </tr>
-                        <?php
-                              }
-                              // Free result set
-                              $result -> free_result();
-                          }
+                            if ($result = $mysqli -> query("SELECT cr.id,cr.name,cr.identification,sso.created_at,s.name as estado FROM central_risk as cr inner join scheduling_occidente as so on so.central_risk_id=cr.id inner join scheduling_status_occidente as sso on so.id=sso.scheduling_id inner join status as s on s.id=sso.status_id where cr.user_id=7 and sso.current=1 and date_format(sso.created_at,'%m') = date_format(now(),'%m')")) {
+                                while ($reg = $result->fetch_array()) {
+                                ?>
+                                <tr>
+                                    <td><?php echo $reg['name'] ?></td>
+                                    <td><?php echo $reg['identification'] ?></td>
+                                    <td><?php echo $reg['created_at'] ?></td>
+                                    <td><?php echo $reg['estado'] ?></td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="#" class="btn btn-info" data-toggle="modal" data-target="#modal-xl" onclick="fetch_form(<?php echo $reg['id'] ?>)"><i class="fas fa-eye"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                 <?php
+                                }
+                                // Free result set
+                                $result -> free_result();
+                            }
                         ?>    
                         </tbody>
                         <tfoot>
