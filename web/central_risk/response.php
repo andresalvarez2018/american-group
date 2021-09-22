@@ -29,23 +29,8 @@
       // Free result set
       $result_user_logueado -> free_result();
     }
-    $central_risk_id=$_GET['id'];
-    if ($result_central_risk = $mysqli -> query("SELECT * FROM `central_risk` WHERE id=$central_risk_id")) {
-        while ($reg_central_risk = $result_central_risk->fetch_array()) {
-          $central_risk_name=$reg_central_risk['name'];
-          $central_risk_identification=$reg_central_risk['identification'];
-          $central_risk_civil_status=$reg_central_risk['civil_status'];
-          $central_risk_type_dwelling=$reg_central_risk['type_dwelling'];
-          $central_risk_income=$reg_central_risk['income'];
-          $central_risk_date_birth=$reg_central_risk['date_birth'];
-          $central_risk_phone_contact=$reg_central_risk['phone_contact'];
-          $central_risk_extension=$reg_central_risk['extension'];
-          $central_risk_action=$reg_central_risk['action'];
-        }
-  
-        // Free result set
-        $result_central_risk -> free_result();
-      }
+    
+    
 ?>  
 
 <!DOCTYPE html>
@@ -86,28 +71,6 @@
 
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
-      <!-- Navbar Search -->
-        <!-- <li class="nav-item">
-            <a class="nav-link" data-widget="navbar-search" href="#" role="button">
-            <i class="fas fa-search"></i>
-            </a>
-            <div class="navbar-search-block">
-            <form class="form-inline" action="../consulta.php" method="POST">
-                <div class="input-group input-group-sm">
-                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-                <div class="input-group-append">
-                    <button class="btn btn-navbar" type="submit">
-                    <i class="fas fa-search"></i>
-                    </button>
-                    <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                    <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                </div>
-            </form>
-            </div>
-        </li> -->
-
       
     </ul>
   </nav>
@@ -163,6 +126,27 @@
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">
+      <?php
+        if (isset($_GET['s'])) {
+          $valor=$_GET['s'];
+          switch ($valor) {
+            case '1':
+        ?>
+          <div>
+            <div class="alert alert-success alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+              <h5><i class="icon fas fa-check"></i>Enhora buena!!</h5>
+              Central de riesgo respondida con exito!!! 
+            </div>
+          </div>
+        <?php
+              break;
+          }
+        ?>
+        
+        <?php
+        }
+        ?>
         <div class="row mb-2">
           <div class="col-sm-6">
             <h1 class="m-0">Central de riesgo</h1>
@@ -236,7 +220,7 @@
                     </div>
                 </div>
                 <div class="col-sm-6 ">
-                    <form action="../controladores/reply_central_risk.php" method="POST">
+                    <form action="../controladores/response_central_supervisor.php" method="POST">
                         <div class="card card-info">
                             <div class="card-header">
                                 <h3 class="card-title">Información</h3>
@@ -245,23 +229,15 @@
                                 <div class="row">
                                     <div class="form-group col-12">
                                         <label>Respuesta Supervisor</label>
-                                        <textarea class="form-control" rows="3" placeholder="Esperando..." readonly style="height: 380px;" id="observation_supervisor" name="observation_supervisor"></textarea>
+                                        <textarea class="form-control" rows="3" placeholder="Esperando..."  style="height: 380px;" id="observation_supervisor" name="observation_supervisor"></textarea>
                                     </div>
                                 </div>
                             </div>
                             <div class="card-footer">
                                 <div class="row">
-                                    <div class="form-group col-sm-6 ">
-                                        <label for="exampleInputEmail1">Estado</label>
-                                        <select class="form-control" aria-label="Default select example" name="status_id">
-                                            <option value="10">Aprobado</option>
-                                            <option value="11">Negado</option>
-                                        </select>
-                                    </div>
-                                    <div class="form-group col-sm-6 " style="display: flex;align-items: flex-end;justify-content: space-evenly;">
+                                    <div class="form-group col-sm-12 " style="display: flex;align-items: flex-end;justify-content: space-evenly;">
                                         <input type="hidden" name="base_id" value="<?php echo $_GET['id'] ?>"/>
-                                        <input type="hidden" name="id_supervisor" id="id_supervisor" value=""/>
-                                        <button type="submit" class="btn btn-success btn-block" disabled id="btn_central_risk" >Consultar</button>
+                                        <button type="submit" class="btn btn-success btn-block"  id="btn_central_risk" >Responder</button>
                                     </div>
                                 </div>
                             </div>
@@ -316,29 +292,6 @@
 <script src="../dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="../dist/js/pages/dashboard2.js"></script>
-<script>
-    window.onload = function () {
-        
-        function verificar_consulta() {
-            fetch('../controladores/verify_central.php?id=<?php echo $central_risk_id ?>')
-            .then(response => response.json())
-            .then(data => get_data(data));
 
-            function get_data(data) {
-                for (let index = 0; index < data.length; index++) {
-                    const element = data[index];
-                    if (element.response_supervisory == "1") {
-                        document.getElementById("observation_supervisor").value = "";  
-                        document.getElementById("observation_supervisor").value = element.observation;  
-                        document.getElementById("id_supervisor").value = element.response_user_id;  
-                        document.getElementById("btn_central_risk").disabled = false;
-                        
-                    }
-                }
-            }
-        }
-        setInterval(verificar_consulta,1000);
-    }
-</script>
 </body>
 </html>

@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET')
 	  }
     else {
       //Mostrar lista de post
-      $sql = $dbConn->prepare("SELECT * FROM posts");
+      $sql = $dbConn->prepare("SELECT * FROM `central_risk` WHERE `response_supervisory` IS NULL ORDER BY `id` ASC");
       $sql->execute();
       $sql->setFetchMode(PDO::FETCH_ASSOC);
       header("HTTP/1.1 200 OK");
@@ -56,11 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
             header('Location: ../admin/chat.php?chatid='.$_POST['chatid']);
             exit;
             break;
-
-        case '3':
-              header('Location: ../supervisor/chat.php?chatid='.$_POST['chatid']);
-              exit;
-              break;
         
         
       }

@@ -5,10 +5,16 @@
         header('Location: ../login/index.php');
         exit;
     }
+    
+    header("Expires: Tue, 01 Jan 2000 00:00:00 GMT");
+    header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+    header("Cache-Control: no-store, no-cache, must-revalidate, max-age=0");
+    header("Cache-Control: post-check=0, pre-check=0", false);
+    header("Pragma: no-cache");
 
     $nombre_usuario=$_SESSION['user'];
     $id_usuario=$_SESSION['id'];
-    $campana_id=$_SESSION['campana_id'];
+
     $mysqli = new mysqli("db","db_american_group","4m3r1c4n2021","db");
 
     // Check connection
@@ -17,6 +23,16 @@
         exit();
     }
 
+    
+    // Perform query
+    if ($result_user_logueado = $mysqli -> query("SELECT * FROM `user` WHERE id=$id_usuario")) {
+      while ($reg_user_loagueado = $result_user_logueado->fetch_array()) {
+        $url_image_user_logueado=$reg_user_loagueado['url_image'];
+      }
+
+      // Free result set
+      $result_user_logueado -> free_result();
+    }
 
 ?>  
 
@@ -35,10 +51,20 @@
   <link rel="stylesheet" href="../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
-   <!-- DataTables -->
-   <link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  <style type="text/css">
+    .global {
+      height: 550px;
+      border: 1px solid #ddd;
+      background: #f1f1f1;
+      overflow-y: scroll;
+    }
+  </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+
 </head>
 <body class="hold-transition  sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 <div class="wrapper">
@@ -159,7 +185,7 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="<?php echo $_SESSION['url_image'] ?>" class="img-circle elevation-2" alt="User Image">
+          <img src="<?php echo $url_image_user_logueado ?>" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
           <a href="#" class="d-block"><?php echo $nombre_usuario ?></a>
@@ -175,19 +201,12 @@
         </ul>
 
       <!-- Sidebar Menu -->
-      <nav class="mt-2">
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-header">Menu</li>
             <li class="nav-item active">
                 <a href="./index.php" class="nav-link ">
                     <i class="nav-icon fas fa-tasks"></i>
                     <p>Dashboard</p>
-                </a>
-            </li>
-            <li class="nav-item ">
-                <a href="./central.php" class="nav-link active">
-                    <i class="nav-icon fas fa-code-branch"></i>
-                    <p>Central de Riesgo</p>
                 </a>
             </li>
             <li class="nav-item">
@@ -197,7 +216,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="./chat.php" class="nav-link ">
+                <a href="./chat.php" class="nav-link active">
                     <i class="nav-icon fas fa-comments"></i>
                     <p>Chat</p>
                 </a>
@@ -216,12 +235,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Central Riesgo</h1>
+            <h1 class="m-0">Chat interactivo</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="../controladores/router.php">Home</a></li>
-              <li class="breadcrumb-item active">Central Riesgo</li>
+              <li class="breadcrumb-item active">Chat </li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -234,83 +253,100 @@
         <div class="container-fluid">
             <!-- Info boxes -->
             <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Listado de Central Riesgo  </h3>
-                </div>
-                <!-- /.card-header -->
-                  
-                    <table id="list_usuarios" class="table table-bordered table-striped" style="text-transform: capitalize;">
-                        <thead>
-                            <tr>
-                                <th>Asesor</th>
-                                <th>Fecha Creación</th>
-                                <th>Estado</th>
-                                <th>Supervisor Respuesta</th>
-                                <th>**</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        <?php
-                            if ($result = $mysqli -> query("SELECT cr.id,u.complete_name as n1,cr.created_at,cr.response_supervisory,u2.complete_name FROM `central_risk` as cr inner join user as u on cr.user_id=u.id left join user as u2 on cr.response_user_id=u2.id")) {
-                                while ($reg = $result->fetch_array()) {
+              <div class="card-body" style=" height: 600px;">
+                <div class="row">
+                  <div class="col-4">
+                    <!-- Contacts are loaded here -->
+                    <div class="global">
+                      <ul class="contacts-list">
+                      <?php
+                        // Perform query
+                        if ($result_user_chat = $mysqli -> query("SELECT * FROM `user` WHERE `id` NOT IN ($id_usuario)")) {
+                          while ($reg_user_chat = $result_user_chat->fetch_array()) {
+                            $reg_user_chat_url_image=$reg_user_chat['url_image'];
+                            $reg_user_chat_complete_name=$reg_user_chat['complete_name'];
+                            $reg_user_chat_id=$reg_user_chat['id'];
+                         
+                      ?>
+                        <li style="background: #353a40;" >
+                          <a href="#" class="item_chat" id=<?php echo $reg_user_chat_id ?>>
+                            <img class="contacts-list-img" src="<?php echo $reg_user_chat_url_image ?>">
+                            <div class="contacts-list-info">
+                              <span class="contacts-list-name">
+                                <?php echo $reg_user_chat_complete_name ?>
+                                <small class="contacts-list-date float-right">
+                                <?php 
+                                  // Perform query
+                                  if ($result_user_chat_last_date= $mysqli -> query("SELECT * FROM `chat` WHERE (`send_user_id` = $id_usuario AND `receiver_user_id` = $reg_user_chat_id) or (`send_user_id` = $reg_user_chat_id AND `receiver_user_id` = $id_usuario) order by created_at desc limit 1")) {
+                                    while ($reg_user_chat_date = $result_user_chat_last_date->fetch_array()) {
+                                      $reg_user_chat_last_date=$reg_user_chat_date['created_at'];
+                                      $date = new DateTime($reg_user_chat_last_date);
+                                      echo date_format($date, 'd/m/Y');
+                                    }
+                                  }
                                 ?>
-                                <tr>
-                                    <td><?php echo $reg['n1'] ?></td>
-                                    <td><?php echo $reg['created_at'] ?></td>
-                                      <?php 
-                                          if ($reg['response_supervisory'] == null) {
-                                             echo "<td style='background: #fd7e14;'>Abierto</td>";
-                                          }else {
-                                            echo "<td style='background: #28a745;'>Cerrado</td>";
-                                          }
-                                      ?>
-                                    <?php 
-                                      if ($reg['complete_name'] == null) {
-                                          echo "<td>Sin respuesta</td>";
-                                      }else {
-                                          echo "<td>".$reg['complete_name']."</td>";
-                                      }
-                                    ?>
-                                    <?php 
-                                      if ($reg['complete_name'] == null) {
-                                    ?>
-                                      <td>
-                                          <div class="btn-group btn-group-sm">
-                                              <a href="../central_risk/response.php?id=<?php echo $reg['id'] ?>" class="btn btn-info"><i class="fas fa-eye"></i> Responder</a>
-                                          </div>
-                                      </td>
-                                    <?php
-                                      }else {
-                                    ?>
-                                      <td>
-                                        <div class="btn-group btn-group-sm">
-                                            <a href="#" class="btn btn-info" data-toggle="modal" data-target="#modal-xl" onclick="fetch_form(<?php echo $reg['id'] ?>)"><i class="fas fa-eye"></i> Revisar</a>
-                                        </div>
-                                      </td>
-                                    <?php
-                                      }
-                                    ?>
-                                    
-                                </tr>
-                                 <?php
+                                </small>
+                              </span>
+                              <span class="contacts-list-msg">
+                              <?php 
+                                // Perform query
+                                if ($result_user_chat_last_message= $mysqli -> query("SELECT * FROM `chat` WHERE (`send_user_id` = $id_usuario AND `receiver_user_id` = $reg_user_chat_id) or (`send_user_id` = $reg_user_chat_id AND `receiver_user_id` = $id_usuario) order by created_at desc limit 1")) {
+                                  while ($reg_user_chat_message = $result_user_chat_last_message->fetch_array()) {
+                                    $reg_user_chat_last_message=$reg_user_chat_message['message'];
+                                    echo substr($reg_user_chat_last_message,0,20);
+                                  }
                                 }
-                                // Free result set
-                                $result -> free_result();
-                            }
-                        ?>    
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th>Nombre Completo</th>
-                                <th>Identificación</th>
-                                <th>Fecha Estado</th>
-                                <th>Name</th>
-                                <th>**</th>
-                            </tr>
-                        </tfoot>
-                    </table>
+                              ?>
+                              </span>
+                            </div>
+                            <!-- /.contacts-list-info -->
+                          </a>
+                        </li>
+                        <?php
+                           }
+                           // Free result set
+                           $result_user_chat -> free_result();
+                         }
+                        ?>
+                        <!-- End Contact Item -->
+                      </ul>
+                      <!-- /.contacts-list -->
+                    </div>
+                  </div>
+                  <div class="col-8">
+                    <div class="card card-danger direct-chat direct-chat-danger" style="height: 550px;">
+                      <div class="card-body">
+                        <!-- Conversations are loaded here -->
+                        <div class="direct-chat-messages" id="all_chat" style="height: 480px;">
+                          <!-- Message. Default to the left -->
+                          
+                          <!-- /.direct-chat-msg -->  
+                          <!-- Message to the right -->
+                          
+                          <!-- /.direct-chat-msg -->
+                        </div>
+                        <!--/.direct-chat-messages-->
+                      </div>
+                      <!-- /.card-body -->
+                      <div class="card-footer">
+                        <form action="../controladores/post.php" method="post">
+                          <div class="input-group">
+                            <input type="text" name="message" placeholder="Escribir mensaje" class="form-control" id="message_input_text">
+                            <input type="hidden" name="chatid" id="chatid">
+                            <span class="input-group-append">
+                              <button type="submit" class="btn btn-primary">Enviar</button>
+                            </span>
+                          </div>
+                        </form>
+                      </div>
+                      <!-- /.card-footer-->
+                    </div>
+                    <!--/.direct-chat -->
+                  </div>
+                </div>
+              </div>
             </div>
-            <!-- /.row -->
+            <!-- /.card -->
         </div><!--/. container-fluid -->
     </section>
     <!-- /.content -->
@@ -333,26 +369,7 @@
     </footer> -->
 </div>
 <!-- ./wrapper -->
-<div class="modal fade" id="modal-xl" style="display: none;" aria-hidden="true">
-  <div class="modal-dialog modal-xl" style="max-width: 90% !important;">
-    <div class="modal-content">
-      <div class="modal-header">
-          <h4 class="modal-title">Información del cliente</h4>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">×</span>
-          </button>
-      </div>
-      <div class="modal-body">
-          <div id="fecth_data"></div>
-      </div>
-      <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-      </div>
-    </div>
-    <!-- /.modal-content -->
-  </div>
-<!-- /.modal-dialog -->
-</div>
+
 <!-- REQUIRED SCRIPTS -->
 <!-- jQuery -->
 <script src="../plugins/jquery/jquery.min.js"></script>
@@ -389,30 +406,24 @@
 <script src="../dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="../dist/js/pages/dashboard2.js"></script>
-<script>
-    async function fetch_form(data) {      
-    try {
-        let response = await fetch('../controladores/fromDataCentral.php?id='+data); // Gets a promise
-        document.getElementById("fecth_data").innerHTML = await response.text(); // Replaces body with response
-    } catch (err) {
-        console.log('Fetch error:' + err); // Error handling
-    }
-    }
-</script>
+
 <script>
   $(function () {
    
     $('#list_usuarios').DataTable({
-        responsive:true,
         dom: 'Bfrtip',
         lengthMenu: [
             [ 10, 25, 50, -1 ],
             [ '10 ', '25 ', '50 ', 'Mostrar todo' ]
         ],
-        order: [[2, "asc"], [1, "asc"]],
         buttons: [
             'pageLength',
-            
+            {
+                text: 'Nuevo Usuario',
+                action: function ( e, dt, node, config ) {  
+                    window.location.href = "./new.php"
+                }
+            }
         ],
         "language": {
             "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
@@ -426,5 +437,87 @@
     });
   });
 </script>
+<script>
+window.onload = function () {
+    var test =document.querySelectorAll('.item_chat')
+    for(var i=0;i<test.length;i++){
+        test[i].addEventListener("click", function(){
+            var id_chat= this.id;
+            var id_user_logueado= <?php echo $id_usuario ?>;
+
+            fetch('../controladores/post.php?idchat='+id_chat,{
+                  method: 'PUT'
+              })
+            .then(response => response.json())
+            .then(data => console.log(data));
+
+            fetch('../controladores/post.php?idchat='+id_chat)
+            .then(response => response.json())
+            .then(data => getchat(data));
+
+            function getchat(data) {
+              document.getElementById("all_chat").innerHTML="";
+              document.getElementById("message_input_text").value = "";  
+              document.getElementById("chatid").value = id_chat;  
+                for (let index = 0; index < data.length; index++) {
+                  const element = data[index];
+                  if (element.receiver_user_id == id_chat) {
+                    $('#all_chat').append("<div class='direct-chat-msg'><div class='direct-chat-infos clearfix'><span class='direct-chat-name float-left'>"+element.send+"</span><span class='direct-chat-timestamp float-right'>"+element.created_at+"</span></div><!-- /.direct-chat-infos --><img class='direct-chat-img' src='"+element.url_image+"' alt='message user image'><!-- /.direct-chat-img --><div class='direct-chat-text' >"+element.message+"</div><!-- /.direct-chat-text --></div>");
+                  }else{
+                    $('#all_chat').append("<div class='direct-chat-msg right'><div class='direct-chat-infos clearfix'><span class='direct-chat-name float-right'>"+element.send+"</span><span class='direct-chat-timestamp float-left'>"+element.created_at+"</span></div><!-- /.direct-chat-infos --><img class='direct-chat-img' src='"+element.url_image+"' alt='message user image'><!-- /.direct-chat-img --><div class='direct-chat-text' style='border-color: #007bff;background-color: #007bff;'>"+element.message+"</div><!-- /.direct-chat-text --></div>"); 
+                  }
+                }
+                var objDiv = document.getElementById("all_chat");
+                objDiv.scrollTop = objDiv.scrollHeight;
+            }
+            
+        }); 
+    }
+
+    let params = new URLSearchParams(location.search);
+    if (params.get('chatid')) {
+      var chatid = params.get('chatid');
+      getchatdatanew(chatid);
+    }
+    
+    function getchatdatanew(params) {
+      var id_chat= params;
+      var id_user_logueado= <?php echo $id_usuario ?>;
+
+      fetch('../controladores/post.php?idchat='+id_chat,{
+                  method: 'PUT'
+              })
+      .then(response => response.json())
+      .then(data => console.log(data));
+
+      fetch('../controladores/post.php?idchat='+id_chat)
+        .then(response => response.json())
+        .then(data => getchatnew(data));
+
+        function getchatnew(data) {
+          document.getElementById("all_chat").innerHTML="";
+          document.getElementById("message_input_text").value = "";  
+          document.getElementById("chatid").value = id_chat;  
+            for (let index = 0; index < data.length; index++) {
+              const element = data[index];
+              if (element.receiver_user_id == id_chat) {
+                $('#all_chat').append("<div class='direct-chat-msg'><div class='direct-chat-infos clearfix'><span class='direct-chat-name float-left'>"+element.send+"</span><span class='direct-chat-timestamp float-right'>"+element.created_at+"</span></div><!-- /.direct-chat-infos --><img class='direct-chat-img' src='"+element.url_image+"' alt='message user image'><!-- /.direct-chat-img --><div class='direct-chat-text' >"+element.message+"</div><!-- /.direct-chat-text --></div>");
+              }else{
+                $('#all_chat').append("<div class='direct-chat-msg right'><div class='direct-chat-infos clearfix'><span class='direct-chat-name float-right'>"+element.send+"</span><span class='direct-chat-timestamp float-left'>"+element.created_at+"</span></div><!-- /.direct-chat-infos --><img class='direct-chat-img' src='"+element.url_image+"' alt='message user image'><!-- /.direct-chat-img --><div class='direct-chat-text' style='border-color: #007bff;background-color: #007bff;'>"+element.message+"</div><!-- /.direct-chat-text --></div>"); 
+              }
+            }
+            var objDiv = document.getElementById("all_chat");
+            objDiv.scrollTop = objDiv.scrollHeight;
+        }
+    }
+
+    
+}   
+
+
+</script>
 </body>
 </html>
+<?php
+$mysqli -> close();
+?>

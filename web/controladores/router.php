@@ -30,6 +30,10 @@
             header('Location: ../supervisor/index.php');
             exit;    
         break;
+        case '4':
+            header('Location: ../backoffice/index.php');
+            exit;    
+        break;
         
     }
 

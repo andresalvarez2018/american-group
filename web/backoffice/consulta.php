@@ -9,6 +9,7 @@
     $nombre_usuario=$_SESSION['user'];
     $id_usuario=$_SESSION['id'];
     $campana_id=$_SESSION['campana_id'];
+
     $mysqli = new mysqli("db","db_american_group","4m3r1c4n2021","db");
 
     // Check connection
@@ -16,7 +17,12 @@
         echo "Failed to connect to MySQL: " . $mysqli -> connect_error;
         exit();
     }
-
+    if ($result_campana = $mysqli -> query("SELECT * FROM `campana` where id=$campana_id")) {
+      while ($reg_campana = $result_campana->fetch_array()) {
+        $prefijo=$reg_campana['prefijo'];
+      }
+    }
+    
 
 ?>  
 
@@ -35,8 +41,8 @@
   <link rel="stylesheet" href="../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
-   <!-- DataTables -->
-   <link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 </head>
@@ -176,7 +182,7 @@
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
-      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-header">Menu</li>
             <li class="nav-item active">
                 <a href="./index.php" class="nav-link ">
@@ -184,20 +190,14 @@
                     <p>Dashboard</p>
                 </a>
             </li>
-            <li class="nav-item ">
-                <a href="./central.php" class="nav-link active">
-                    <i class="nav-icon fas fa-code-branch"></i>
-                    <p>Central de Riesgo</p>
-                </a>
-            </li>
             <li class="nav-item">
-                <a href="./consulta.php" class="nav-link">
+                <a href="./consulta.php" class="nav-link active">
                     <i class="nav-icon fas fa-users"></i>
                     <p>Consulta</p>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="./chat.php" class="nav-link ">
+                <a href="./chat.php" class="nav-link">
                     <i class="nav-icon fas fa-comments"></i>
                     <p>Chat</p>
                 </a>
@@ -216,12 +216,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Central Riesgo</h1>
+            <h1 class="m-0">Consulta</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="../controladores/router.php">Home</a></li>
-              <li class="breadcrumb-item active">Central Riesgo</li>
+              <li class="breadcrumb-item active">Consulta</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -231,86 +231,99 @@
 
     <!-- Main content -->
     <section class="content">
+    
         <div class="container-fluid">
+        <?php
+        if (isset($_GET['sa'])) {
+          $valor=$_GET['sa'];
+          switch ($valor) {
+            case '1':
+        ?>
+          <div>
+            <div class="alert alert-warning alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+              <h5><i class="icon fas fa-check"></i>Cuidado!!</h5>
+              Se ha desactivado la base: <strong> <?php echo $_GET['name_base'] ?> </strong>
+            </div>
+          </div>
+        <?php
+              break;
+
+            case '2':
+        ?>
+          <div>
+            <div class="alert alert-success alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+              <h5><i class="icon fas fa-check"></i>Enhorabuena!!</h5>
+              Se ha activado la base: <strong> <?php echo $_GET['name_base'] ?> </strong>
+            </div>
+          </div>
+        <?php
+              break;
+            
+          }
+        ?>
+        
+        <?php
+        }
+        ?>
             <!-- Info boxes -->
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Listado de Central Riesgo  </h3>
+                    <h3 class="card-title">Listado de ventas</h3>
                 </div>
                 <!-- /.card-header -->
-                  
-                    <table id="list_usuarios" class="table table-bordered table-striped" style="text-transform: capitalize;">
-                        <thead>
-                            <tr>
-                                <th>Asesor</th>
-                                <th>Fecha Creación</th>
-                                <th>Estado</th>
-                                <th>Supervisor Respuesta</th>
-                                <th>**</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                
+                <div class="card-body">
+                  <table id="list_usuarios" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre Completo</th>
+                            <th>Identificación</th>
+                            <th>Fecha Estado</th>
+                            <th>Name</th>
+                            <th>**</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         <?php
-                            if ($result = $mysqli -> query("SELECT cr.id,u.complete_name as n1,cr.created_at,cr.response_supervisory,u2.complete_name FROM `central_risk` as cr inner join user as u on cr.user_id=u.id left join user as u2 on cr.response_user_id=u2.id")) {
-                                while ($reg = $result->fetch_array()) {
-                                ?>
+                        if ($prefijo !== '') {
+                          if ($result = $mysqli -> query("SELECT cr.id,cr.name,cr.identification,sso.created_at,s.name as estado FROM central_risk as cr inner join scheduling_$prefijo as so on so.central_risk_id=cr.id inner join scheduling_status_$prefijo as sso on so.id=sso.scheduling_id inner join status as s on s.id=sso.status_id ")) {
+                            while ($reg = $result->fetch_array()) {
+                            ?>
                                 <tr>
-                                    <td><?php echo $reg['n1'] ?></td>
+                                    <td><?php echo $reg['name'] ?></td>
+                                    <td><?php echo $reg['identification'] ?></td>
                                     <td><?php echo $reg['created_at'] ?></td>
-                                      <?php 
-                                          if ($reg['response_supervisory'] == null) {
-                                             echo "<td style='background: #fd7e14;'>Abierto</td>";
-                                          }else {
-                                            echo "<td style='background: #28a745;'>Cerrado</td>";
-                                          }
-                                      ?>
-                                    <?php 
-                                      if ($reg['complete_name'] == null) {
-                                          echo "<td>Sin respuesta</td>";
-                                      }else {
-                                          echo "<td>".$reg['complete_name']."</td>";
-                                      }
-                                    ?>
-                                    <?php 
-                                      if ($reg['complete_name'] == null) {
-                                    ?>
-                                      <td>
-                                          <div class="btn-group btn-group-sm">
-                                              <a href="../central_risk/response.php?id=<?php echo $reg['id'] ?>" class="btn btn-info"><i class="fas fa-eye"></i> Responder</a>
-                                          </div>
-                                      </td>
-                                    <?php
-                                      }else {
-                                    ?>
-                                      <td>
+                                    <td><?php echo $reg['estado'] ?></td>
+                                    <td>
                                         <div class="btn-group btn-group-sm">
-                                            <a href="#" class="btn btn-info" data-toggle="modal" data-target="#modal-xl" onclick="fetch_form(<?php echo $reg['id'] ?>)"><i class="fas fa-eye"></i> Revisar</a>
+                                            <a href="#" class="btn btn-info" data-toggle="modal" data-target="#modal-xl" onclick="fetch_form(<?php echo $reg['id'] ?>)"><i class="fas fa-eye"></i></a>
                                         </div>
-                                      </td>
-                                    <?php
-                                      }
-                                    ?>
-                                    
+                                    </td>
                                 </tr>
-                                 <?php
-                                }
-                                // Free result set
-                                $result -> free_result();
+                        <?php
                             }
+                          // Free result set
+                          $result -> free_result();
+                          }
+                        }
                         ?>    
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th>Nombre Completo</th>
-                                <th>Identificación</th>
-                                <th>Fecha Estado</th>
-                                <th>Name</th>
-                                <th>**</th>
-                            </tr>
-                        </tfoot>
-                    </table>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Nombre Completo</th>
+                            <th>Identificación</th>
+                            <th>Fecha Estado</th>
+                            <th>Name</th>
+                            <th>**</th>
+                        </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              <!-- /.card-body -->
             </div>
-            <!-- /.row -->
+            <!-- /.card -->
         </div><!--/. container-fluid -->
     </section>
     <!-- /.content -->
@@ -389,16 +402,7 @@
 <script src="../dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="../dist/js/pages/dashboard2.js"></script>
-<script>
-    async function fetch_form(data) {      
-    try {
-        let response = await fetch('../controladores/fromDataCentral.php?id='+data); // Gets a promise
-        document.getElementById("fecth_data").innerHTML = await response.text(); // Replaces body with response
-    } catch (err) {
-        console.log('Fetch error:' + err); // Error handling
-    }
-    }
-</script>
+
 <script>
   $(function () {
    
@@ -409,7 +413,6 @@
             [ 10, 25, 50, -1 ],
             [ '10 ', '25 ', '50 ', 'Mostrar todo' ]
         ],
-        order: [[2, "asc"], [1, "asc"]],
         buttons: [
             'pageLength',
             
@@ -426,5 +429,18 @@
     });
   });
 </script>
+<script>
+    async function fetch_form(data) {      
+    try {
+        let response = await fetch('../controladores/fromData.php?id='+data); // Gets a promise
+        document.getElementById("fecth_data").innerHTML = await response.text(); // Replaces body with response
+    } catch (err) {
+        console.log('Fetch error:' + err); // Error handling
+    }
+    }
+</script>
 </body>
 </html>
+<?php
+$mysqli -> close();
+?>
