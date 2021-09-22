@@ -38,9 +38,9 @@
 </head>
 <body>
     <div class="row">
-        <div class="col-sm-8">
+        <div class="col-sm-12">
             <?php
-                if ($result_from = $mysqli -> query("SELECT  cr.name,cr.identification,cr.civil_status,cr.type_dwelling,cr.income,cr.date_birth,cr.phone_contact,so.created_at,so.date,so.process,so.method,so.address,so.city,so.place_visit,so.trip,so.products,so.purchase_portfolio,so.observation FROM central_risk as cr inner join scheduling_occidente as so on so.central_risk_id=cr.id inner join scheduling_status_occidente as sso on so.id=sso.scheduling_id inner join status as s on s.id=sso.status_id inner join user as u on u.id=sso.user_id where cr.id=$form_id and sso.current=1")) {
+                if ($result_from = $mysqli -> query("SELECT  cr.name,cr.identification,cr.civil_status,cr.type_dwelling,cr.income,cr.date_birth,cr.phone_contact,so.created_at,so.date,so.process,so.method,so.address,so.city,so.place_visit,so.trip,so.products,so.purchase_portfolio,so.observation,so.id FROM central_risk as cr inner join scheduling_occidente as so on so.central_risk_id=cr.id inner join scheduling_status_occidente as sso on so.id=sso.scheduling_id inner join status as s on s.id=sso.status_id inner join user as u on u.id=sso.user_id where cr.id=$form_id and sso.current=1")) {
                 
                     while ($reg_form= $result_from->fetch_array()) {
                         $full_name=$reg_form['name'];            
@@ -61,6 +61,7 @@
                         $products=$reg_form['products'];            
                         $purchase_portfolio=$reg_form['purchase_portfolio'];            
                         $observation=$reg_form['observation'];            
+                        $id_scheduling=$reg_form['id'];            
             ?>
             
             <div class="row">
@@ -136,47 +137,37 @@
                     <label for="exampleInputEmail1">Observaciones</label>
                     <textarea name="observation" class="form-control" id="exampleInputEmail1" disabled ><?php echo $observation ?></textarea>
                 </div>
-            </div>  
+            </div> 
+            <hr>
+            <h5>Cambio de estado</h5>
+            <form action="../controladores/update_scheduling.php" method="POST">
+           
+                <div class="input-group col-sm-12">
+                    <label class="input-group-text" for="inputGroupSelect01">Tipificaciones</label>
+                    <select class="form-control" id="select_status" required name="status" onchange="select_volver_llamar()">
+                        <option disabled selected>Seleccione...</option>
+                        <?php 
+                            if ($status = $mysqli -> query("SELECT * FROM `status`")) {
+                                while ($status_result = $status->fetch_array()) {
+                        ?>
+                        <option value="<?php echo $status_result['id'] ?>"><?php echo $status_result['name'] ?></option>
+                        <?php 
+                                }
+                            }
+                        ?>
+                    </select>
+                </div>
+                <div class="form-group col-sm-12 ">
+                    <label for="exampleInputEmail1">Observaciones</label>
+                    <textarea name="observation" class="form-control" id="exampleInputEmail1" ></textarea>
+                </div>
+                <input type="hidden" name="base_id" value="<?php echo $id_scheduling?>"/>
+                <button type="SUBMIT" class="btn btn-outline-primary btn-block">Enviar Información</button>
+            </form>
             <?php
                     }
                 }
             ?>
-        </div>
-         
-        <div class="col-sm-4">
-            <div class="timeline">
-                <!-- timeline time label -->
-                <div class="time-label">
-                    <span class="bg-red">Linea Tiempo Cliente</span>
-                </div>
-                <!-- /.timeline-label -->
-                <!-- timeline item -->
-                <?php
-                    if ($result = $mysqli -> query("SELECT sso.created_at,s.name as estado,u.complete_name,sso.notes FROM central_risk as cr inner join scheduling_occidente as so on so.central_risk_id=cr.id inner join scheduling_status_occidente as sso on so.id=sso.scheduling_id inner join status as s on s.id=sso.status_id inner join user as u on u.id=sso.user_id where cr.id=$form_id ORDER BY sso.created_at DESC")) {
-                        while ($reg = $result->fetch_array()) {
-                ?>
-                <div>
-                    <i class="fas fa-envelope bg-blue"></i>
-                    <div class="timeline-item">
-                        <span class="time"><i class="fas fa-clock"></i> <?php echo $reg['created_at'] ?></span>
-                        <h3 class="timeline-header"><a href="#"><?php echo $reg['complete_name'] ?></a><br><?php echo $reg['estado'] ?></h3>
-
-                        <div class="timeline-body">
-                            <?php echo $reg['notes'] ?>
-                        </div>
-                    </div>
-                </div>
-                <?php
-                    }
-                    // Free result set
-                    $result -> free_result();
-                }
-                ?>    
-                <!-- END timeline item -->
-                <div>
-                    <i class="fas fa-clock bg-gray"></i>
-                </div>
-            </div>
         </div>
     </div>
 </body>

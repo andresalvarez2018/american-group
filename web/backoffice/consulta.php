@@ -288,7 +288,7 @@
                     <tbody>
                         <?php
                         if ($prefijo !== '') {
-                          if ($result = $mysqli -> query("SELECT cr.id,cr.name,cr.identification,sso.created_at,s.name as estado FROM central_risk as cr inner join scheduling_$prefijo as so on so.central_risk_id=cr.id inner join scheduling_status_$prefijo as sso on so.id=sso.scheduling_id inner join status as s on s.id=sso.status_id ")) {
+                          if ($result = $mysqli -> query("SELECT cr.id,cr.name,cr.identification,sso.created_at,s.name as estado FROM central_risk as cr inner join scheduling_$prefijo as so on so.central_risk_id=cr.id inner join scheduling_status_$prefijo as sso on so.id=sso.scheduling_id inner join status as s on s.id=sso.status_id where sso.current=1 group by so.id")) {
                             while ($reg = $result->fetch_array()) {
                             ?>
                                 <tr>
@@ -299,6 +299,9 @@
                                     <td>
                                         <div class="btn-group btn-group-sm">
                                             <a href="#" class="btn btn-info" data-toggle="modal" data-target="#modal-xl" onclick="fetch_form(<?php echo $reg['id'] ?>)"><i class="fas fa-eye"></i></a>
+                                        </div>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal-xl" onclick="fetch_scheduling(<?php echo $reg['id'] ?>)"><i class="fas fa-pencil-ruler"></i></a>
                                         </div>
                                     </td>
                                 </tr>
@@ -433,6 +436,16 @@
     async function fetch_form(data) {      
     try {
         let response = await fetch('../controladores/fromData.php?id='+data); // Gets a promise
+        document.getElementById("fecth_data").innerHTML = await response.text(); // Replaces body with response
+    } catch (err) {
+        console.log('Fetch error:' + err); // Error handling
+    }
+    }
+</script>
+<script>
+    async function fetch_scheduling(data) {      
+    try {
+        let response = await fetch('../controladores/fromScheduling.php?id='+data); // Gets a promise
         document.getElementById("fecth_data").innerHTML = await response.text(); // Replaces body with response
     } catch (err) {
         console.log('Fetch error:' + err); // Error handling
