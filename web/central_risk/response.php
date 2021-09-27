@@ -10,7 +10,7 @@
     $id_usuario=$_SESSION['id'];
     $campana_id=$_SESSION['campana_id'];
 
-    $mysqli = new mysqli("db","db_american_group","4m3r1c4n2021","db");
+    $mysqli = new mysqli("localhost","root","","db");
     $hoy = date("Y-m-d H:i:s");
 
     // Check connection
@@ -30,7 +30,23 @@
       $result_user_logueado -> free_result();
     }
     
-    
+    $central_risk_id=$_GET['id'];
+    if ($result_central_risk = $mysqli -> query("SELECT * FROM `central_risk` WHERE id=$central_risk_id")) {
+        while ($reg_central_risk = $result_central_risk->fetch_array()) {
+          $central_risk_name=$reg_central_risk['name'];
+          $central_risk_identification=$reg_central_risk['identification'];
+          $central_risk_civil_status=$reg_central_risk['civil_status'];
+          $central_risk_type_dwelling=$reg_central_risk['type_dwelling'];
+          $central_risk_income=$reg_central_risk['income'];
+          $central_risk_date_birth=$reg_central_risk['date_birth'];
+          $central_risk_phone_contact=$reg_central_risk['phone_contact'];
+          $central_risk_extension=$reg_central_risk['extension'];
+          $central_risk_action=$reg_central_risk['action'];
+        }
+  
+        // Free result set
+        $result_central_risk -> free_result();
+      }
 ?>  
 
 <!DOCTYPE html>
