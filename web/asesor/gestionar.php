@@ -47,6 +47,8 @@
   <link rel="stylesheet" href="../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
+  <!-- fullCalendar -->
+  <link rel="stylesheet" href="../plugins/fullcalendar/main.css">
 </head>
 <body class="hold-transition  sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 <div class="wrapper">
@@ -184,8 +186,14 @@
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <li class="nav-header">Menu</li>
+            <li class="nav-item active">
+                <a href="./index.php" class="nav-link ">
+                    <i class="nav-icon fas fa-tasks"></i>
+                    <p>Dashboard</p>
+                </a>
+            </li>
             <li class="nav-item">
                 <a href="./gestionar.php" class="nav-link active">
                     <i class="nav-icon fas fa-tasks"></i>
@@ -214,6 +222,12 @@
                 <a href="./chat.php" class="nav-link">
                     <i class="nav-icon fas fa-comments"></i>
                     <p>Chat</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="./referido.php" class="nav-link">
+                    <i class="nav-icon fas fa-user-tag"></i>
+                    <p>Referido</p>
                 </a>
             </li>
         </ul>
@@ -478,6 +492,18 @@
             </div>
             <!-- /.row -->
         </div><!--/. container-fluid -->
+        <div class="row">
+          <div class="col-md-12">
+            <div class="card card-primary">
+              <div class="card-body p-0">
+                <!-- THE CALENDAR -->
+                <div id="calendar"></div>
+              </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
+          </div>
+        </div>
     </section>
     <!-- /.content -->
   </div>
@@ -523,6 +549,9 @@
 <script src="../dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="../dist/js/pages/dashboard2.js"></script>
+<!-- fullCalendar 2.2.5 -->
+<script src="../plugins/moment/moment.min.js"></script>
+<script src="../plugins/fullcalendar/main.js"></script>
 <script>
     function select_volver_llamar() {
         var x = document.getElementById("select_status").value;
@@ -533,5 +562,29 @@
         }
     }
 </script>
+<!-- Page specific script -->
+<script>
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        var calendar = new FullCalendar.Calendar(calendarEl, {
+          initialView: 'dayGridMonth',
+          events: '../controladores/callback.php',
+          locale: 'es',
+          //Evento Click
+          eventClick: function(info) {
+            // fetch('http://example.com/movies.json')
+            // .then(response => response.json())
+            // .then(data => console.log(data));
+            // // change the border color just for fun
+            // info.el.style.borderColor = 'red';
+
+            alert("evento clickeado");
+          }
+        });
+        calendar.render();
+      });
+
+    </script>
 </body>
 </html>

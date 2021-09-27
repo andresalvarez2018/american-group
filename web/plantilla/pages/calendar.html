@@ -59,21 +59,9 @@
       <li class="nav-item dropdown">
         <a class="nav-link" data-toggle="dropdown" href="#">
           <i class="far fa-comments"></i>
-          <?php
-                // Perform query
-                $notification_count=0;
-                if ($result_count_chat= $mysqli -> query("SELECT * FROM `chat` as c inner join user as u on c.send_user_id=u.id WHERE `receiver_user_id` = $id_usuario AND `read_message` = 0 GROUP by send_user_id")) {
-                  while ($reg_count_chat = $result_count_chat->fetch_array()) {
-                    $notification_count++;
-              ?>
+          
           <span class="badge badge-danger navbar-badge"><?php echo $notification_count ?></span>
-          <?php
-                }
-
-              // Free result set
-              $result_count_chat -> free_result();
-            }
-          ?>
+          
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
           <a href="#" class="dropdown-item">

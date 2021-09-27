@@ -176,10 +176,16 @@
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
         <li class="nav-header">Menu</li>
+            <li class="nav-item active">
+                <a href="./index.php" class="nav-link ">
+                    <i class="nav-icon fas fa-tasks"></i>
+                    <p>Dashboard</p>
+                </a>
+            </li>
             <li class="nav-item">
-                <a href="./gestionar.php" class="nav-link">
+                <a href="./gestionar.php" class="nav-link ">
                     <i class="nav-icon fas fa-tasks"></i>
                     <p>Gestionar</p>
                 </a>
@@ -191,7 +197,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="./backlog.php" class="nav-link">
+                <a href="./backlog.php" class="nav-link ">
                     <i class="nav-icon far fa-bookmark"></i>
                     <p>Backlog</p>
                 </a>
@@ -206,6 +212,12 @@
                 <a href="./chat.php" class="nav-link">
                     <i class="nav-icon fas fa-comments"></i>
                     <p>Chat</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="./referido.php" class="nav-link">
+                    <i class="nav-icon fas fa-user-tag"></i>
+                    <p>Referido</p>
                 </a>
             </li>
         </ul>
