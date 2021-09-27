@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: db
--- Tiempo de generación: 27-09-2021 a las 02:29:53
+-- Tiempo de generación: 27-09-2021 a las 16:26:36
 -- Versión del servidor: 10.3.28-MariaDB-1:10.3.28+maria~focal-log
 -- Versión de PHP: 7.4.19
 
@@ -109,8 +109,8 @@ CREATE TABLE `base_occidente` (
 
 INSERT INTO `base_occidente` (`id`, `created_at`, `complete_name`, `identification`, `phone_number`, `assigned`, `assigned_at`, `processed`, `processed_at`, `status_id`, `archivo_id`, `is_active`, `user_assigned`, `observation`, `callback`, `reassigned`) VALUES
 (1, '2021-08-14 18:40:04', 'reg 1', 1018506147, 3103209084, 1, '2021-08-18 04:04:57', 1, '2021-08-27 23:13:57', 2, 31, 1, 7, 'OBSERVACION PRYEBA', '2021-08-18 23:12:00', 0),
-(2, '2021-08-14 18:43:29', 'reg 2', 1018506147, 3103209084, 1, '2021-08-18 14:05:02', 1, '2021-08-19 04:16:19', 2, 31, 0, 7, 'hola como vas ', '0000-00-00 00:00:00', 0),
-(3, '2021-08-14 18:46:52', 'reg 3', 1018506147, 3103209084, 1, '2021-09-08 20:59:07', 0, '2021-08-19 04:14:24', NULL, 31, 1, 7, 'pbservacion prueba 2', '0000-00-00 00:00:00', 1),
+(2, '2021-08-14 18:43:29', 'reg 2', 1018506147, 3103209084, 1, '2021-08-18 14:05:02', 1, '2021-08-19 04:16:19', 2, 31, 0, 7, 'hola como vas ', '2021-09-29 09:28:21', 0),
+(3, '2021-08-14 18:46:52', 'reg 3', 1018506147, 3103209084, 1, '2021-09-08 20:59:07', 1, '2021-09-27 12:37:41', 4, 31, 1, 7, 'prueba', '0000-00-00 00:00:00', 1),
 (4, '2021-08-19 12:30:24', 'andres felipe alvarez', 1018506147, 3103209084, 1, '2021-08-19 21:56:53', 1, '2021-08-19 12:46:48', 5, 31, 1, 7, 'observacion desde el piloto automatico descativado ', '0000-00-00 00:00:00', 0),
 (5, '2021-08-19 21:55:52', 'andres felipe alvarez', 1018506147, 3103209084, 1, '2021-09-08 20:54:43', 1, '2021-09-09 01:59:12', 4, 31, 1, 7, 'observacion de prueba', '0000-00-00 00:00:00', 1),
 (6, '2021-08-31 20:20:17', 'andres felipe alvarez', 1018506147, 3103209084, 1, '2021-09-08 20:54:43', 0, '2021-08-31 20:26:01', NULL, 31, 1, 5, 'prueba', '0000-00-00 00:00:00', 1),
@@ -177,7 +177,8 @@ INSERT INTO `central_risk` (`id`, `created_at`, `name`, `identification`, `civil
 (4, '2021-08-31 20:31:14', 'Andres Felipe Alvarez Perea', ' 1018506147', 'Soltero', 'Familiar', '350000000', '1998-10-07', '3103209084', '101', 'TCD', 'asdasdasdasdas', 6, NULL, 7, 1, 1),
 (5, '2021-09-02 17:26:11', 'nicolle daniela yepes perea', ' 1018506147', 'Soltero', 'Propia', '2000000', '2021-09-02', '3103209084', '101', 'TCD', 'sdfsdfs', 7, 10, 7, 1, 1),
 (6, '2021-09-22 01:45:06', 'base prueba 4', ' 1018506147', 'Casado', 'Familiar', '2000000', '2021-09-08', '3103209084', '101', 'TCD', '\"qui dolorem ipsum, quia dolor sit amet consectetur adipisci velit, sed quia non numquam eius modi tempora incidunt, ut labore et dolore magnam aliquam quaerat voluptatem\".\r\n\r\n\r\n\r\n\"Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but occasionally circumstances occur in which toil and pain can procure him some great pleasure\".\r\n\r\n\r\n\"Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but occasionally circumstances occur in which toil and pain can procure him some great pleasure\".\r\n\r\n\"Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is pain, but occasionally circumstances occur in which toil and pain can procure him some great pleasure\".', 5, NULL, 7, 1, 10),
-(7, '2021-09-22 15:35:18', 'nicolle daniela yepes perea', ' 1018506147', 'Casado', 'Familiar', '1234567890', '2021-09-22', '3103209084', '101', 'TCD', '123456y7890adfghjksdfghjkdsfghjm', 7, 10, 7, 1, 10);
+(7, '2021-09-22 15:35:18', 'nicolle daniela yepes perea', ' 1018506147', 'Casado', 'Familiar', '1234567890', '2021-09-22', '3103209084', '101', 'TCD', '123456y7890adfghjksdfghjkdsfghjm', 7, 10, 7, 1, 10),
+(8, '2021-09-27 12:41:22', 'asd', ' 123456', 'Casado', 'Familiar', '23456789', '2021-09-27', '23456789', '122', 'TCD', 'cliente no pasa por x y z motivo\r\n\r\n', 3, 11, 7, 1, 10);
 
 -- --------------------------------------------------------
 
@@ -216,8 +217,13 @@ INSERT INTO `chat` (`id`, `send_user_id`, `receiver_user_id`, `message`, `create
 (15, 7, 10, 'asd', '2021-09-22 02:07:00', 1),
 (16, 10, 7, '12312312', '2021-09-22 15:32:38', 1),
 (17, 10, 7, '12312312', '2021-09-22 15:32:38', 1),
-(18, 7, 11, 'hola gaendameint', '2021-09-22 15:32:36', 0),
-(19, 7, 6, 'asdfghjkl;\'', '2021-09-22 15:32:45', 0);
+(18, 7, 11, 'hola gaendameint', '2021-09-27 12:52:44', 1),
+(19, 7, 6, 'asdfghjkl;\'', '2021-09-22 15:32:45', 0),
+(20, 11, 7, 'como vas?', '2021-09-27 13:20:34', 1),
+(21, 11, 7, '?', '2021-09-27 13:20:34', 1),
+(22, 11, 7, '?', '2021-09-27 13:20:34', 1),
+(23, 11, 7, '.', '2021-09-27 13:20:34', 1),
+(24, 7, 11, 'buenas buenas', '2021-09-27 13:20:41', 0);
 
 -- --------------------------------------------------------
 
@@ -387,14 +393,14 @@ INSERT INTO `status` (`id`, `created_at`, `name`, `sector`) VALUES
 (7, '2021-08-20 01:25:55', 'FUERA DE SERVICIO', 1),
 (8, '2021-08-20 01:25:57', 'APAGADO', 1),
 (9, '2021-08-20 01:25:58', 'CLIENTE CON PRODUCTOS VIGENTES', 1),
-(10, '2021-08-20 01:26:03', 'APROBADO', 2),
-(11, '2021-08-20 01:26:09', 'NEGADO', 2),
+(10, '2021-09-27 12:43:04', 'APROBADO', 3),
+(11, '2021-09-27 12:43:34', 'NO OBEJTIVO', 2),
 (12, '2021-08-20 17:17:00', 'PREAGENDADO', 3),
 (13, '2021-08-20 20:11:54', 'AGENDADO', 3),
 (14, '2021-08-20 20:11:54', 'CITA OK', 3),
 (15, '2021-08-20 20:12:31', 'CITA INCUMPLIDA', 3),
 (16, '2021-08-20 20:12:31', 'RADICADO', 3),
-(17, '2021-08-20 20:12:55', 'APROBADO', 3),
+(17, '2021-09-27 12:43:49', 'OBJETIVO', 2),
 (18, '2021-08-20 20:12:55', 'NEGADO', 3),
 (19, '2021-08-20 20:13:02', 'DEVUELTO', 3);
 
@@ -423,14 +429,14 @@ CREATE TABLE `user` (
 --
 
 INSERT INTO `user` (`id`, `complete_name`, `username`, `pasword`, `role_id`, `created_at`, `update_at`, `is_active`, `update_password`, `url_image`, `campana_id`) VALUES
-(1, 'Andres Alvarez', 'andres', '202cb962ac59075b964b07152d234b70', 2, '2021-08-11 14:32:07', '2021-08-19 20:52:13', 1, 0, '../imagen/usuarios/1/452437943.png', 1),
+(1, 'Andres Alvarez', 'andres', '202cb962ac59075b964b07152d234b70', 2, '2021-08-11 14:32:07', '2021-09-27 13:02:42', 1, 0, '../imagen/usuarios/1/452437943.png', 1),
 (5, 'nicolle yepes', 'nicolle yepes', '5084f19201d9dc6448f4a44efbecf49d', 1, '2021-08-14 19:58:59', '2021-08-19 02:16:01', 1, 1, '../imagen/usuarios/5/1658588427.png', 1),
 (6, 'joel mateo ', 'mateo perea', 'd348098b4753e539df25ecb4242a1a41', 2, '2021-08-14 20:12:39', '2021-09-07 16:08:57', 1, 1, '../imagen/usuarios/6/830494490.png', 1),
 (7, 'kathe herrera', 'kathe herrera', '4297f44b13955235245b2497399d7a93', 1, '2021-08-19 02:28:46', '2021-09-09 01:58:55', 1, 0, '../imagen/usuarios/7/1883933175.png', 1),
 (8, 'federico marin', 'federico', 'e10adc3949ba59abbe56e057f20f883e', 1, '2021-08-19 22:15:35', '2021-08-23 12:30:19', 1, 1, '../imagen/usuarios/8/1349603382.png', 1),
 (9, 'asd', 'asd', 'a8f5f167f44f4964e6c998dee827110c', 1, '2021-09-07 05:38:05', '2021-09-07 05:47:31', 1, 1, '../imagen/usuarios/9/1362204328.png', 1),
 (10, 'andres supervisor', 'supervisor', '5084f19201d9dc6448f4a44efbecf49d', 3, '2021-09-09 01:41:13', '2021-09-22 00:50:16', 1, 0, '../imagen/usuarios/10/1080096802.png', 1),
-(11, 'Agendamiento', 'Agendamiento', '5084f19201d9dc6448f4a44efbecf49d', 4, '2021-09-22 02:11:37', '2021-09-22 02:12:09', 1, 0, '../imagen/usuarios/11/1485358666.png', 1),
+(11, 'Agendamiento', 'Agendamiento', '5084f19201d9dc6448f4a44efbecf49d', 4, '2021-09-22 02:11:37', '2021-09-27 12:52:13', 1, 0, '../imagen/usuarios/11/1485358666.png', 1),
 (12, 'nicolle daniela yepes perea', 'nicolle yepes', 'e10adc3949ba59abbe56e057f20f883e', 4, '2021-09-22 15:51:45', NULL, 1, 1, '../imagen/usuarios/12/993466138.png', 1);
 
 --
@@ -577,13 +583,13 @@ ALTER TABLE `campana`
 -- AUTO_INCREMENT de la tabla `central_risk`
 --
 ALTER TABLE `central_risk`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `chat`
 --
 ALTER TABLE `chat`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
 
 --
 -- AUTO_INCREMENT de la tabla `details_group_jobs`
@@ -625,7 +631,7 @@ ALTER TABLE `scheduling_status_occidente`
 -- AUTO_INCREMENT de la tabla `status`
 --
 ALTER TABLE `status`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=22;
 
 --
 -- AUTO_INCREMENT de la tabla `user`
@@ -715,6 +721,14 @@ ALTER TABLE `scheduling_status_occidente`
 ALTER TABLE `user`
   ADD CONSTRAINT `user_campana` FOREIGN KEY (`campana_id`) REFERENCES `campana` (`id`),
   ADD CONSTRAINT `user_role` FOREIGN KEY (`role_id`) REFERENCES `role` (`id`);
+
+DELIMITER $$
+--
+-- Eventos
+--
+CREATE DEFINER=`root`@`localhost` EVENT `Actualizar claves` ON SCHEDULE EVERY 1 MONTH STARTS '2021-09-01 08:01:19' ENDS '2030-12-01 08:01:19' ON COMPLETION PRESERVE ENABLE COMMENT 'Actualiza las contrasena de manera mensual para toda la empresa' DO UPDATE `user` SET `update_password` = '1' where `is_active` = '1'$$
+
+DELIMITER ;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
