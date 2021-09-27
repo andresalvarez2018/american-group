@@ -50,17 +50,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST')
         case '1':
           header('Location: ../asesor/chat.php?chatid='.$_POST['chatid']);
           exit;
-          break;
+        break;
 
         case '2':
-            header('Location: ../admin/chat.php?chatid='.$_POST['chatid']);
-            exit;
-            break;
+          header('Location: ../admin/chat.php?chatid='.$_POST['chatid']);
+          exit;
+        break;
 
         case '3':
-              header('Location: ../supervisor/chat.php?chatid='.$_POST['chatid']);
-              exit;
-              break;
+          header('Location: ../supervisor/chat.php?chatid='.$_POST['chatid']);
+          exit;
+        break;
+
+        case '4':
+            header('Location: ../backoffice/chat.php?chatid='.$_POST['chatid']);
+            exit;
+          break;
         
         
       }

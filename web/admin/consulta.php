@@ -10,7 +10,7 @@
     $id_usuario=$_SESSION['id'];
     $campana_id=$_SESSION['campana_id'];
 
-    $mysqli = new mysqli("localhost","root","","db");
+   $mysqli = new mysqli("db","db_american_group","4m3r1c4n2021","db");
 
     // Check connection
     if ($mysqli -> connect_errno) {
@@ -334,7 +334,7 @@
                         }
 
                         if ($prefijo !== '') {
-                          if ($result = $mysqli -> query("SELECT cr.id,cr.name,cr.identification,sso.created_at,s.name as estado FROM central_risk as cr inner join scheduling_$prefijo as so on so.central_risk_id=cr.id inner join scheduling_status_$prefijo as sso on so.id=sso.scheduling_id inner join status as s on s.id=sso.status_id ")) {
+                          if ($result = $mysqli -> query("SELECT cr.id,cr.name,cr.identification,sso.created_at,s.name as estado FROM central_risk as cr inner join scheduling_$prefijo as so on so.central_risk_id=cr.id inner join scheduling_status_$prefijo as sso on so.id=sso.scheduling_id inner join status as s on s.id=sso.status_id  where sso.current=1")) {
                             while ($reg = $result->fetch_array()) {
                             ?>
                                 <tr>

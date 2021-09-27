@@ -8,7 +8,7 @@
     
     $hoy = date("Y-m-d H:i:s");
 
-    $mysqli = new mysqli("localhost","root","","db");
+   $mysqli = new mysqli("db","db_american_group","4m3r1c4n2021","db");
 
     $observation_supervisor=$_POST['observation_supervisor'];
     $status_id=$_POST['status_id'];
@@ -21,6 +21,16 @@
     }
     $mysqli -> close();
 
-    header('Location: ../form/agenda.php?id='.$base_id);
-    exit;
+    switch ($status_id) {
+        case '17':
+            header('Location: ../form/agenda.php?id='.$base_id);
+            exit;
+        break;
+        
+        case '11':
+            header('Location: ../asesor/gestionar.php?c=1');
+            exit;
+        break;
+    }
+    
 ?>

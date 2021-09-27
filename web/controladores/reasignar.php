@@ -13,7 +13,7 @@
     $base_id=$_REQUEST['base_id'];
     $registros=$_REQUEST['registros'];
 
-    $mysqli = new mysqli("localhost","root","","db");
+   $mysqli = new mysqli("db","db_american_group","4m3r1c4n2021","db");
     $id_reg=[];
 
     if ($result_status = $mysqli -> query("SELECT * FROM `bases_archivo` WHERE `id` = $base_id")) {

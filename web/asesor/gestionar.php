@@ -10,7 +10,7 @@
     $id_usuario=$_SESSION['id'];
     $campana_id=$_SESSION['campana_id'];
 
-    $mysqli = new mysqli("localhost","root","","db");
+   $mysqli = new mysqli("db","db_american_group","4m3r1c4n2021","db");
     $hoy = date("Y-m-d H:i:s");
 
     // Check connection
@@ -254,6 +254,19 @@
             <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
             <h5><i class="icon fas fa-check"></i> Enhorabuena!!</h5>
             Registro guardado con exito.
+          </div>
+        </div>
+        <?php
+        }
+      ?>
+      <?php
+        if (isset($_GET['c'])) {
+        ?>
+        <div>
+          <div class="alert alert-warning alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h5><i class="icon fas fa-check"></i> Central de Riesgo!!</h5>
+            Se ha Guardado la Central de Riesgo.
           </div>
         </div>
         <?php

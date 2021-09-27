@@ -9,6 +9,7 @@
     $nombre_usuario=$_SESSION['user'];
     $id_usuario=$_SESSION['id'];
     $campana_id=$_SESSION['campana_id'];
+
    $mysqli = new mysqli("db","db_american_group","4m3r1c4n2021","db");
 
     // Check connection
@@ -16,7 +17,12 @@
         echo "Failed to connect to MySQL: " . $mysqli -> connect_error;
         exit();
     }
-
+    if ($result_campana = $mysqli -> query("SELECT * FROM `campana` where id=$campana_id")) {
+      while ($reg_campana = $result_campana->fetch_array()) {
+        $prefijo=$reg_campana['prefijo'];
+      }
+    }
+    
 
 ?>  
 
@@ -35,8 +41,8 @@
   <link rel="stylesheet" href="../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
-   <!-- DataTables -->
-   <link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
   <link rel="stylesheet" href="../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
   <link rel="stylesheet" href="../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 </head>
@@ -176,29 +182,23 @@
 
       <!-- Sidebar Menu -->
       <nav class="mt-2">
-        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
-        <li class="nav-header">Menu</li>
-            <li class="nav-item">
-                <a href="./gestionar.php" class="nav-link">
+      <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+            <li class="nav-header">Menu</li>
+            <li class="nav-item active">
+                <a href="./index.php" class="nav-link ">
                     <i class="nav-icon fas fa-tasks"></i>
-                    <p>Gestionar</p>
+                    <p>Dashboard</p>
+                </a>
+            </li>
+            <li class="nav-item ">
+                <a href="./central.php" class="nav-link">
+                    <i class="nav-icon fas fa-code-branch"></i>
+                    <p>Central de Riesgo</p>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="./ventas.php" class="nav-link active">
-                    <i class="nav-icon fas fa-bookmark"></i>
-                    <p>Ventas</p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="./backlog.php" class="nav-link">
-                    <i class="nav-icon far fa-bookmark"></i>
-                    <p>Backlog</p>
-                </a>
-            </li>
-            <li class="nav-item">
-                <a href="./consulta.php" class="nav-link">
-                    <i class="nav-icon fas fa-search"></i>
+                <a href="./consulta.php" class="nav-link active">
+                    <i class="nav-icon fas fa-users"></i>
                     <p>Consulta</p>
                 </a>
             </li>
@@ -222,12 +222,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Ventas</h1>
+            <h1 class="m-0">Consulta</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="../controladores/router.php">Home</a></li>
-              <li class="breadcrumb-item active">Ventas</li>
+              <li class="breadcrumb-item active">Consulta</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -237,29 +237,66 @@
 
     <!-- Main content -->
     <section class="content">
+    
         <div class="container-fluid">
+        <?php
+        if (isset($_GET['sa'])) {
+          $valor=$_GET['sa'];
+          switch ($valor) {
+            case '1':
+        ?>
+          <div>
+            <div class="alert alert-warning alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+              <h5><i class="icon fas fa-check"></i>Cuidado!!</h5>
+              Se ha desactivado la base: <strong> <?php echo $_GET['name_base'] ?> </strong>
+            </div>
+          </div>
+        <?php
+              break;
+
+            case '2':
+        ?>
+          <div>
+            <div class="alert alert-success alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+              <h5><i class="icon fas fa-check"></i>Enhorabuena!!</h5>
+              Se ha activado la base: <strong> <?php echo $_GET['name_base'] ?> </strong>
+            </div>
+          </div>
+        <?php
+              break;
+            
+          }
+        ?>
+        
+        <?php
+        }
+        ?>
             <!-- Info boxes -->
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Listado de ventas  </h3>
+                    <h3 class="card-title">Listado de ventas</h3>
                 </div>
                 <!-- /.card-header -->
-                  
-                    <table id="list_usuarios" class="table table-bordered table-striped">
-                        <thead>
-                            <tr>
-                                <th>Nombre Completo</th>
-                                <th>Identificación</th>
-                                <th>Fecha Estado</th>
-                                <th>Name</th>
-                                <th>**</th>
-                            </tr>
-                        </thead>
-                        <tbody>
+                
+                <div class="card-body">
+                  <table id="list_usuarios" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre Completo</th>
+                            <th>Identificación</th>
+                            <th>Fecha Estado</th>
+                            <th>Name</th>
+                            <th>**</th>
+                        </tr>
+                    </thead>
+                    <tbody>
                         <?php
-                            if ($result = $mysqli -> query("SELECT cr.id,cr.name,cr.identification,sso.created_at,s.name as estado FROM central_risk as cr inner join scheduling_occidente as so on so.central_risk_id=cr.id inner join scheduling_status_occidente as sso on so.id=sso.scheduling_id inner join status as s on s.id=sso.status_id where cr.user_id=7 and sso.current=1 and date_format(sso.created_at,'%m') = date_format(now(),'%m')")) {
-                                while ($reg = $result->fetch_array()) {
-                                ?>
+                        if ($prefijo !== '') {
+                          if ($result = $mysqli -> query("SELECT cr.id,cr.name,cr.identification,sso.created_at,s.name as estado FROM central_risk as cr inner join scheduling_$prefijo as so on so.central_risk_id=cr.id inner join scheduling_status_$prefijo as sso on so.id=sso.scheduling_id inner join status as s on s.id=sso.status_id where sso.current=1 group by so.id")) {
+                            while ($reg = $result->fetch_array()) {
+                            ?>
                                 <tr>
                                     <td><?php echo $reg['name'] ?></td>
                                     <td><?php echo $reg['identification'] ?></td>
@@ -271,25 +308,28 @@
                                         </div>
                                     </td>
                                 </tr>
-                                 <?php
-                                }
-                                // Free result set
-                                $result -> free_result();
+                        <?php
                             }
+                          // Free result set
+                          $result -> free_result();
+                          }
+                        }
                         ?>    
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th>Nombre Completo</th>
-                                <th>Identificación</th>
-                                <th>Fecha Estado</th>
-                                <th>Name</th>
-                                <th>**</th>
-                            </tr>
-                        </tfoot>
-                    </table>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Nombre Completo</th>
+                            <th>Identificación</th>
+                            <th>Fecha Estado</th>
+                            <th>Name</th>
+                            <th>**</th>
+                        </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              <!-- /.card-body -->
             </div>
-            <!-- /.row -->
+            <!-- /.card -->
         </div><!--/. container-fluid -->
     </section>
     <!-- /.content -->
@@ -348,8 +388,6 @@
 <script src="../plugins/raphael/raphael.min.js"></script>
 <script src="../plugins/jquery-mapael/jquery.mapael.min.js"></script>
 <script src="../plugins/jquery-mapael/maps/usa_states.min.js"></script>
-<!-- ChartJS -->
-<script src="../plugins/chart.js/Chart.min.js"></script>
 <!-- DataTables  & Plugins -->
 <script src="../plugins/datatables/jquery.dataTables.min.js"></script>
 <script src="../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
@@ -363,10 +401,14 @@
 <script src="../plugins/datatables-buttons/js/buttons.html5.min.js"></script>
 <script src="../plugins/datatables-buttons/js/buttons.print.min.js"></script>
 <script src="../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
+<!-- ChartJS -->
+<script src="../plugins/chart.js/Chart.min.js"></script>
+
 <!-- AdminLTE for demo purposes -->
 <script src="../dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="../dist/js/pages/dashboard2.js"></script>
+
 <script>
   $(function () {
    
@@ -403,5 +445,18 @@
     }
     }
 </script>
+<script>
+    async function fetch_scheduling(data) {      
+    try {
+        let response = await fetch('../controladores/fromScheduling.php?id='+data); // Gets a promise
+        document.getElementById("fecth_data").innerHTML = await response.text(); // Replaces body with response
+    } catch (err) {
+        console.log('Fetch error:' + err); // Error handling
+    }
+    }
+</script>
 </body>
 </html>
+<?php
+$mysqli -> close();
+?>

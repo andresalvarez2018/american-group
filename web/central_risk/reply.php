@@ -10,7 +10,7 @@
     $id_usuario=$_SESSION['id'];
     $campana_id=$_SESSION['campana_id'];
 
-    $mysqli = new mysqli("localhost","root","","db");
+   $mysqli = new mysqli("db","db_american_group","4m3r1c4n2021","db");
     $hoy = date("Y-m-d H:i:s");
 
     // Check connection
@@ -254,8 +254,16 @@
                                     <div class="form-group col-sm-6 ">
                                         <label for="exampleInputEmail1">Estado</label>
                                         <select class="form-control" aria-label="Default select example" name="status_id">
-                                            <option value="10">Aprobado</option>
-                                            <option value="11">Negado</option>
+                                          <option disabled selected>Seleccione...</option>
+                                          <?php 
+                                              if ($status = $mysqli -> query("SELECT * FROM `status` WHERE `sector` = 2 ORDER BY `status`.`name` DESC")) {
+                                                  while ($status_result = $status->fetch_array()) {
+                                          ?>
+                                          <option value="<?php echo $status_result['id'] ?>"><?php echo $status_result['name'] ?></option>
+                                          <?php 
+                                                  }
+                                              }
+                                          ?>
                                         </select>
                                     </div>
                                     <div class="form-group col-sm-6 " style="display: flex;align-items: flex-end;justify-content: space-evenly;">
