@@ -49,6 +49,12 @@
     $id_create=$mysqli->insert_id;
 
     $mysqli -> close();
-    header('Location: ../central_risk/reply.php?id='.$id_create);
-    exit;
+    if ($tipo_venta == "Tradicional") {
+        header('Location: ../central_risk/reply.php?id='.$id_create);
+        exit;
+    }elseif($tipo_venta == "Digital"){
+        header('Location: ../form/agenda.php?id='.$id_create);
+        exit;
+    }
+    
 ?>

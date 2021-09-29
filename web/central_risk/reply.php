@@ -41,6 +41,12 @@
           $central_risk_phone_contact=$reg_central_risk['phone_contact'];
           $central_risk_extension=$reg_central_risk['extension'];
           $central_risk_action=$reg_central_risk['action'];
+          $central_risk_tipo_venta=$reg_central_risk['tipo_venta'];
+          $central_risk_tcd_visa=$reg_central_risk['tcd_visa'];
+          $central_risk_tcd_master=$reg_central_risk['tcd_master'];
+          $central_risk_autorizacion=$reg_central_risk['autorizacion'];
+          $central_risk_mail_send=$reg_central_risk['mail_send'];
+          $central_risk_number_whatsapp=$reg_central_risk['number_whatsapp'];
         }
   
         // Free result set
@@ -228,8 +234,33 @@
                                     </div>
                                     <div class="form-group col-sm-6 ">
                                         <label for="exampleInputEmail1">Tramite</label>
-                                        <input type="text" name="action" class="form-control" id="action"  value="<?php echo  $central_risk_action?>" disabled>
+                                        <input type="text" name="action" class="form-control" id="tramite"  value="<?php echo  $central_risk_action?>" disabled>
                                     </div>
+                                    <div class="form-group col-sm-6 ">
+                                        <label for="exampleInputEmail1">Tipo Venta</label>
+                                        <input type="text" name="action" class="form-control" id="action"  value="<?php echo  $central_risk_tipo_venta?>" disabled>
+                                    </div>
+                                    <div class="form-group col-sm-6 " id="TCD_VISA" >
+                                        <label for="exampleInputEmail1">TCD VISA</label>
+                                        <input type="text" name="action" class="form-control"  value="<?php echo  $central_risk_tcd_visa?>" disabled>
+                                    </div>
+                                    <div class="form-group col-sm-6 " id="TCD_MASTERCARD">
+                                        <label for="exampleInputEmail1">TCD MASTERCARD</label>
+                                        <input type="text" name="action" class="form-control"   value="<?php echo  $central_risk_tcd_master?>" disabled>
+                                    </div>
+                                    <div class="form-group col-sm-6 " id="autorizacion">
+                                        <label for="exampleInputEmail1">Envio Autorización</label>
+                                        <input type="text" name="action" class="form-control"  id="autorizacion_selects"  value="<?php echo  $central_risk_autorizacion?>" disabled>
+                                    </div>
+                                    <div class="form-group col-sm-6 " id="mail_send" >
+                                        <label for="exampleInputEmail1">Correo Electronico</label>
+                                        <input type="text" name="action" id="correo_enviar" class="form-control"  value="<?php echo  $central_risk_mail_send?>" disabled>
+                                    </div>
+                                    <div class="form-group col-sm-6 " id="number_whatsapp">
+                                        <label for="exampleInputEmail1">Numero Whatsapp</label>
+                                        <input type="text" name="action" class="form-control"   value="<?php echo  $central_risk_number_whatsapp?>" disabled>
+                                    </div>
+                                   
                                 </div>  
                             </div>
                         </form>
@@ -253,9 +284,10 @@
                                 <div class="row">
                                     <div class="form-group col-sm-12">
                                         <label for="exampleInputEmail1">Estado</label>
-                                        <h4 id="response_status"></h4>
+                                        <h4 id="response_status" style="color:red"></h4>
                                     </div>
-                                    <button type="SUBMIT" class="btn btn-outline-primary btn-block" disabled>Continuar</button>
+                                    <input type="hidden" name="base_id" value="<?php echo  $central_risk_id?>"/>
+                                    <button type="SUBMIT" id="continuar_submit" class="btn btn-outline-primary btn-block" disabled>Continuar</button>
                                 </div>
                             </div>
                         </div>
@@ -323,15 +355,18 @@
                     if (element.response_supervisory == "1") {
                         document.getElementById("observation_supervisor").value =element.observation;
                         if (element.status_id == "17") {
-                          document.getElementById("response_status").value = "Cliente Aprobado";  
+                          document.getElementById("response_status").innerHTML = "Cliente Aprobado";  
+                          document.getElementById("continuar_submit").disabled=false;
                         }else if(element.status_id == "11"){
-                          document.getElementById("response_status").value = "Cliente Rechazado";  
+                          document.getElementById("response_status").innerHTML = "Cliente Rechazado";  
+                          document.getElementById("continuar_submit").disabled=false;
                         }
                     }
                 }
             }
         }
         setInterval(verificar_consulta,1000);
+        
     }
 </script>
 </body>
