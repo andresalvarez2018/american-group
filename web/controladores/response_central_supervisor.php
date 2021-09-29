@@ -16,9 +16,10 @@
 
     $base_id=$_POST['base_id'];
     $observation_supervisor=$_POST['observation_supervisor'];
+    $status_central=$_POST['status_central'];
 
     // Perform query
-    if (!$mysqli -> query("UPDATE `central_risk` SET `observation` = '$observation_supervisor', `response_supervisory` = 1,`response_user_id` = $id_usuario WHERE `central_risk`.`id` = $base_id")) {
+    if (!$mysqli -> query("UPDATE `central_risk` SET `status_id` = '$status_central',`observation` = '$observation_supervisor', `response_supervisory` = 1,`response_user_id` = $id_usuario WHERE `central_risk`.`id` = $base_id")) {
         echo("Error description: " . $mysqli -> error);
     }
     $mysqli -> close();

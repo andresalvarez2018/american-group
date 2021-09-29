@@ -179,15 +179,15 @@
                                 <div class="row">
                                     <div class="form-group col-sm-6 ">
                                         <label for="exampleInputEmail1">Nombre completo</label>
-                                        <input type="text" name="complete_name" class="form-control" id="complete_name" placeholder="Ingrese Nombre Completo" >
+                                        <input type="text" name="complete_name" class="form-control" id="complete_name" placeholder="Ingrese Nombre Completo" required>
                                     </div>
                                     <div class="form-group col-sm-6 ">
                                         <label for="exampleInputEmail1">Cedula</label>
-                                        <input type="text" name="identification" class="form-control" id="identification" placeholder="Numero de identificación " >
+                                        <input type="text" name="identification" class="form-control" id="identification" placeholder="Numero de identificación " required>
                                     </div>
                                     <div class="form-group col-sm-6 ">
                                         <label for="exampleInputEmail1">Estado civil</label>
-                                        <select class="form-control" aria-label="Default select example" name="civil_status">
+                                        <select class="form-control" aria-label="Default select example" name="civil_status" required>
                                             <option value="Soltero">Soltero</option>
                                             <option value="Casado">Casado</option>
                                             <option value="Union Libre">Union Libre</option>
@@ -195,7 +195,7 @@
                                     </div>
                                     <div class="form-group col-sm-6 ">
                                         <label for="exampleInputEmail1">Tipo de vivienda</label>
-                                        <select class="form-control" aria-label="Default select example" name="type_dwelling">
+                                        <select class="form-control" aria-label="Default select example" name="type_dwelling" required>
                                             <option value="Propia">Propia</option>
                                             <option value="Familiar">Familiar</option>
                                             <option value="Arriendo">Arriendo</option>
@@ -203,33 +203,83 @@
                                     </div>
                                     <div class="form-group col-sm-6 ">
                                         <label for="exampleInputEmail1">Ingresos</label>
-                                        <input type="number" name="income" class="form-control" id="income" placeholder="Ingresos" >
+                                        <input type="number" name="income" class="form-control" id="income" placeholder="Ingresos" required>
                                     </div>
                                     <div class="form-group col-sm-6 ">
                                         <label for="exampleInputEmail1">Fecha Nacimiento</label>
-                                        <input type="date" name="date_birth" class="form-control" id="date_birth" >
+                                        <input type="date" name="date_birth" class="form-control" id="date_birth"required >
                                     </div>
                                     <div class="form-group col-sm-6 ">
                                         <label for="exampleInputEmail1">Teléfono Contacto</label>
-                                        <input type="text" name="phone_contact" class="form-control" id="phone_contact" placeholder="Teléfono contacto" >
+                                        <input type="text" name="phone_contact" class="form-control" id="phone_contact" placeholder="Teléfono contacto" required>
                                     </div>
                                     <div class="form-group col-sm-6 ">
                                         <label for="exampleInputEmail1">Extension</label>
-                                        <input type="text" name="extension" class="form-control" id="exampleInputEmail1" placeholder="Extension" >
+                                        <input type="text" name="extension" class="form-control" id="exampleInputEmail1" placeholder="Extension" required>
+                                    </div>
+                                    <div class="form-group col-sm-6 ">
+                                        <label for="exampleInputEmail1">Tipo Venta</label>
+                                        <select class="form-control" aria-label="Default select example" name="tipo_venta" required>
+                                            <option value="Tradicional">Tradicional</option>
+                                            <option value="Digital">Digital</option>
+                                        </select>
                                     </div>
                                     <div class="form-group col-sm-6 ">
                                         <label for="exampleInputEmail1">Tramite</label>
-                                        <select class="form-control" aria-label="Default select example" name="action">
+                                        <select class="form-control"  name="action" onchange="tramite()" required id="select_status" >
+                                          <option disabled selected>Seleccione...</option>
                                             <option value="TCD">TCD</option>
                                             <option value="Prestamo">Prestamo</option>
                                         </select>
+                                    </div>
+                                    <div class="form-group col-sm-6" style="display: none;" id="TCD_VISA">
+                                        <label for="exampleInputEmail1">TCD VISA</label>
+                                        <select class="form-control" aria-label="Default select example" name="tcd_visa">
+                                            <option value="No Aplica"selected>No Aplica</option>
+                                            <option value="Visa Clasica">Visa Clasica</option>
+                                            <option value="Visa Oro">Visa Oro</option>
+                                            <option value="Visa Platinum">Visa Platinum</option>
+                                            <option value="Visa Signature">Visa Signature </option>
+                                            <option value="Visa Latam Clasica">Visa Latam Clasica</option>
+                                            <option value="Visa Latam Oro">Visa Latam Oro</option>
+                                            <option value="Visa Latam Platinum">Visa Latam Platinum</option>
+                                            <option value="Visa Latam Signature">Visa Latam Signature</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-sm-6" style="display: none;" id="TCD_MASTERCARD">
+                                        <label for="exampleInputEmail1">TCD MASTERCARD</label>
+                                        <select class="form-control" aria-label="Default select example" name="tcd_master">
+                                            <option value="No Aplica"selected>No Aplica</option>
+                                            <option value="Master Clasica">Master Clasica</option>
+                                            <option value="Master Oro">Master Oro</option>
+                                            <option value="Master Platinum">Master Platinum</option>
+                                            <option value="Master Black ">Master Black</option>
+                                            <option value="Master Unicef Oro">Master Unicef Oro</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-sm-6" style="display: none;" id="autorizacion">
+                                        <label for="exampleInputEmail1">Envio Autorización</label>
+                                        <select class="form-control" id="autorizacion_select" onchange="autorizacion_selects()" aria-label="Default select example" name="autorizacion">
+                                            <option disabled selected>Seleccione...</option>
+                                            <option value="Correo Electonico">Correo Electonico</option>
+                                            <option value="Whatsapp">Whatsapp</option>
+                                            <option value="Presencial">Presencial</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group col-sm-6" style="display: none;" id="mail_send">
+                                        <label for="exampleInputEmail1">Correo Electronico</label>
+                                        <input type="mail"  class="form-control" name="mail_send" >
+                                    </div>
+                                    <div class="form-group col-sm-6" style="display: none;" id="number_whatsapp">
+                                        <label for="exampleInputEmail1">Numero Whatsapp</label>
+                                        <input type="text"  class="form-control" name="number_whatsapp" >
                                     </div>
                                 </div>  
                             </div>
                             <!-- /.card-body -->
                             <div class="card-footer">
                                 <input type="hidden" name="base_id" value="<?php echo $_GET['id'] ?>"/>
-                                <button type="submit" class="btn btn-success">Consultar</button>
+                                <button id="submit" type="submit" disabled class="btn btn-success">Consultar</button>
                             </div>
                         </form>
                     </div>
@@ -302,6 +352,39 @@
     function textAreaAdjust(element) {
         element.style.height = "1px";
         element.style.height = (25+element.scrollHeight)+"px";
+    }
+</script>
+<script>
+    function tramite() {
+        var x = document.getElementById("select_status").value;
+        if (x === 'TCD') {
+          document.getElementById("TCD_MASTERCARD").style.display = "block";
+          document.getElementById("TCD_VISA").style.display = "block";
+          document.getElementById("autorizacion").style.display = "none";
+          document.getElementById("mail_send").style.display = "none";
+          document.getElementById("number_whatsapp").style.display = "none";
+          document.getElementById("submit").disabled=false;
+        }else{
+          document.getElementById("TCD_MASTERCARD").style.display = "none";
+          document.getElementById("TCD_VISA").style.display = "none";
+          document.getElementById("autorizacion").style.display = "block";
+          document.getElementById("mail_send").style.display = "block";
+          document.getElementById("number_whatsapp").style.display = "block";
+          document.getElementById("submit").disabled=false;
+        }
+    }
+    function autorizacion_selects() {
+      var y = document.getElementById("autorizacion_select").value;
+      if (y == "Correo Electonico") {
+        document.getElementById("number_whatsapp").style.display = "none";
+        document.getElementById("mail_send").style.display = "block";
+      }else if(y == "Whatsapp"){
+        document.getElementById("mail_send").style.display = "none";
+        document.getElementById("number_whatsapp").style.display = "block";
+      }else if(y == "Presencial"){
+        document.getElementById("mail_send").style.display = "none";
+        document.getElementById("number_whatsapp").style.display = "none";
+      }
     }
 </script>
 </body>

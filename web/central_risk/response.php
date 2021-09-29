@@ -42,6 +42,12 @@
           $central_risk_phone_contact=$reg_central_risk['phone_contact'];
           $central_risk_extension=$reg_central_risk['extension'];
           $central_risk_action=$reg_central_risk['action'];
+          $central_risk_tipo_venta=$reg_central_risk['tipo_venta'];
+          $central_risk_tcd_visa=$reg_central_risk['tcd_visa'];
+          $central_risk_tcd_master=$reg_central_risk['tcd_master'];
+          $central_risk_autorizacion=$reg_central_risk['autorizacion'];
+          $central_risk_mail_send=$reg_central_risk['mail_send'];
+          $central_risk_number_whatsapp=$reg_central_risk['number_whatsapp'];
         }
   
         // Free result set
@@ -64,8 +70,20 @@
   <link rel="stylesheet" href="../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
+  <style>
+    .loader {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        z-index: 9999;
+        background: url('../dist/gif/pageLoader.gif') 50% 50% no-repeat rgb(249,249,249);
+        opacity: .8;
+    }
+  </style>
 </head>
-<body class="hold-transition  sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
+<body onload="tramite();" class="hold-transition  sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 <div class="wrapper">
 
   <!-- Preloader -->
@@ -228,15 +246,41 @@
                                     </div>
                                     <div class="form-group col-sm-6 ">
                                         <label for="exampleInputEmail1">Tramite</label>
-                                        <input type="text" name="action" class="form-control" id="action"  value="<?php echo  $central_risk_action?>" disabled>
+                                        <input type="text" name="action" class="form-control" id="tramite"  value="<?php echo  $central_risk_action?>" disabled>
                                     </div>
+                                    <div class="form-group col-sm-6 ">
+                                        <label for="exampleInputEmail1">Tipo Venta</label>
+                                        <input type="text" name="action" class="form-control" id="action"  value="<?php echo  $central_risk_tipo_venta?>" disabled>
+                                    </div>
+                                    <div class="form-group col-sm-6 " id="TCD_VISA" >
+                                        <label for="exampleInputEmail1">TCD VISA</label>
+                                        <input type="text" name="action" class="form-control"  value="<?php echo  $central_risk_tcd_visa?>" disabled>
+                                    </div>
+                                    <div class="form-group col-sm-6 " id="TCD_MASTERCARD">
+                                        <label for="exampleInputEmail1">TCD MASTERCARD</label>
+                                        <input type="text" name="action" class="form-control"   value="<?php echo  $central_risk_tcd_master?>" disabled>
+                                    </div>
+                                    <div class="form-group col-sm-6 " id="autorizacion">
+                                        <label for="exampleInputEmail1">Envio Autorización</label>
+                                        <input type="text" name="action" class="form-control"  id="autorizacion_selects"  value="<?php echo  $central_risk_autorizacion?>" disabled>
+                                    </div>
+                                    <div class="form-group col-sm-6 " id="mail_send" >
+                                        <label for="exampleInputEmail1">Correo Electronico</label>
+                                        <input type="text" name="action" id="correo_enviar" class="form-control"  value="<?php echo  $central_risk_mail_send?>" disabled>
+                                    </div>
+                                    <div class="form-group col-sm-6 " id="number_whatsapp">
+                                        <label for="exampleInputEmail1">Numero Whatsapp</label>
+                                        <input type="text" name="action" class="form-control"   value="<?php echo  $central_risk_number_whatsapp?>" disabled>
+                                    </div>
+                                    <span class="btn btn-warning btn-block" id="btn_mail" onclick="send_email()">Enviar Autorización via Correo</span>
+                                    <span class="btn btn-warning btn-block" id="btn_whatsapp">Enviar Autorización via Whatsapp</span>
                                 </div>  
                             </div>
                         </form>
                     </div>
                 </div>
                 <div class="col-sm-6 ">
-                    <form action="../controladores/response_central_supervisor.php" method="POST">
+                    <form onsubmit="return submit_form()" action="../controladores/response_central_supervisor.php" method="POST">
                         <div class="card card-info">
                             <div class="card-header">
                                 <h3 class="card-title">Información</h3>
@@ -245,17 +289,26 @@
                                 <div class="row">
                                     <div class="form-group col-12">
                                         <label>Respuesta Supervisor</label>
-                                        <textarea class="form-control" rows="3" placeholder="Esperando..."  style="height: 380px;" id="observation_supervisor" name="observation_supervisor"></textarea>
+                                        <textarea class="form-control" rows="3" placeholder="Esperando..."  style="height: 380px;" id="observation_supervisor" name="observation_supervisor" required></textarea>
                                     </div>
                                 </div>
                             </div>
                             <div class="card-footer">
-                                <div class="row">
-                                    <div class="form-group col-sm-12 " style="display: flex;align-items: flex-end;justify-content: space-evenly;">
-                                        <input type="hidden" name="base_id" value="<?php echo $_GET['id'] ?>"/>
-                                        <button type="submit" class="btn btn-success btn-block"  id="btn_central_risk" >Responder</button>
-                                    </div>
+                              <div class="row">
+                                <div class="form-group col-sm-12">
+                                    <label for="exampleInputEmail1">Estado</label>
+                                    <select class="form-control" aria-label="Default select example" name="status_central" required>
+                                        <option value="17">Objetivo</option>
+                                        <option value="11">No Objetvo</option>
+                                    </select>
                                 </div>
+                              </div>
+                              <div class="row">
+                                  <div class="form-group col-sm-12 " style="display: flex;align-items: flex-end;justify-content: space-evenly;">
+                                      <input type="hidden" name="base_id" value="<?php echo $_GET['id'] ?>"/>
+                                      <button type="submit" class="btn btn-success btn-block"  id="btn_central_risk" >Responder</button>
+                                  </div>
+                              </div>
                             </div>
                         </div>
                     </form>
@@ -308,6 +361,79 @@
 <script src="../dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="../dist/js/pages/dashboard2.js"></script>
+<script>
+    function tramite() {
+        var x = document.getElementById("tramite").value;
+        console.log(x);
+        if (x === 'TCD') {
+          document.getElementById("TCD_MASTERCARD").style.display = "block";
+          document.getElementById("TCD_VISA").style.display = "block";
+          document.getElementById("autorizacion").style.display = "none";
+          document.getElementById("mail_send").style.display = "none";
+          document.getElementById("number_whatsapp").style.display = "none";
+          document.getElementById("btn_mail").style.display = "none";
+          document.getElementById("btn_whatsapp").style.display = "none";
+        }else{
+          document.getElementById("TCD_MASTERCARD").style.display = "none";
+          document.getElementById("TCD_VISA").style.display = "none";
+          document.getElementById("autorizacion").style.display = "block";
+          document.getElementById("mail_send").style.display = "block";
+          document.getElementById("number_whatsapp").style.display = "block";
+          var y = document.getElementById("autorizacion_selects").value;
+          if (y == "Correo Electonico") {
+            document.getElementById("number_whatsapp").style.display = "none";
+            document.getElementById("mail_send").style.display = "block";
+            document.getElementById("btn_mail").style.display = "block";
+            document.getElementById("btn_whatsapp").style.display = "none";
+          }else if(y == "Whatsapp"){
+            document.getElementById("mail_send").style.display = "none";
+            document.getElementById("number_whatsapp").style.display = "block";
+            document.getElementById("btn_whatsapp").style.display = "block";
+            document.getElementById("btn_mail").style.display = "none";
+          }else if(y == "Presencial"){
+            document.getElementById("mail_send").style.display = "none";
+            document.getElementById("number_whatsapp").style.display = "none";
+          }
+        }
 
+      
+    }
+
+    function send_email() {
+      document.getElementById("loader").style.display = "block";
+
+      var c = document.getElementById("correo_enviar").value;
+      fetch('../controladores/vendor/send_email.php?email_send='+c)
+      .then(response => response.json())
+      .then(data => get_data(data));
+
+      function get_data(data) {
+        document.getElementById("loader").style.display = "none";
+      }
+
+    }
+
+    function submit_form() {
+      var v = document.getElementById("tramite").value;
+      if (v == "TCD") {
+        var opcion = confirm("Esta Seguro en Guardar la información?");
+        if (opcion == true) {
+          return true;
+        }else{
+          return false;
+        }
+      }else{
+        var opcion = confirm("Ha Enviado Autorización del Cliente?");
+          if (opcion == true) {
+            return true;
+          }else{
+            return false;
+          }
+      }
+      
+    }
+
+</script>
+<div id="loader" class="loader" style="display:none"></div>
 </body>
 </html>

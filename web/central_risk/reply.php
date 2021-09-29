@@ -251,26 +251,11 @@
                             </div>
                             <div class="card-footer">
                                 <div class="row">
-                                    <div class="form-group col-sm-6 ">
+                                    <div class="form-group col-sm-12">
                                         <label for="exampleInputEmail1">Estado</label>
-                                        <select class="form-control" aria-label="Default select example" name="status_id">
-                                          <option disabled selected>Seleccione...</option>
-                                          <?php 
-                                              if ($status = $mysqli -> query("SELECT * FROM `status` WHERE `sector` = 2 ORDER BY `status`.`name` DESC")) {
-                                                  while ($status_result = $status->fetch_array()) {
-                                          ?>
-                                          <option value="<?php echo $status_result['id'] ?>"><?php echo $status_result['name'] ?></option>
-                                          <?php 
-                                                  }
-                                              }
-                                          ?>
-                                        </select>
+                                        <h4 id="response_status"></h4>
                                     </div>
-                                    <div class="form-group col-sm-6 " style="display: flex;align-items: flex-end;justify-content: space-evenly;">
-                                        <input type="hidden" name="base_id" value="<?php echo $_GET['id'] ?>"/>
-                                        <input type="hidden" name="id_supervisor" id="id_supervisor" value=""/>
-                                        <button type="submit" class="btn btn-success btn-block" disabled id="btn_central_risk" >Consultar</button>
-                                    </div>
+                                    <button type="SUBMIT" class="btn btn-outline-primary btn-block" disabled>Continuar</button>
                                 </div>
                             </div>
                         </div>
@@ -336,11 +321,12 @@
                 for (let index = 0; index < data.length; index++) {
                     const element = data[index];
                     if (element.response_supervisory == "1") {
-                        document.getElementById("observation_supervisor").value = "";  
-                        document.getElementById("observation_supervisor").value = element.observation;  
-                        document.getElementById("id_supervisor").value = element.response_user_id;  
-                        document.getElementById("btn_central_risk").disabled = false;
-                        
+                        document.getElementById("observation_supervisor").value =element.observation;
+                        if (element.status_id == "17") {
+                          document.getElementById("response_status").value = "Cliente Aprobado";  
+                        }else if(element.status_id == "11"){
+                          document.getElementById("response_status").value = "Cliente Rechazado";  
+                        }
                     }
                 }
             }

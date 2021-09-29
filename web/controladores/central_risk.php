@@ -20,10 +20,29 @@
     $phone_contact=$_POST['phone_contact'];
     $extension=$_POST['extension'];
     $action=$_POST['action'];
+    $tipo_venta=$_POST['tipo_venta'];
+    $tcd_visa=$_POST['tcd_visa'];
+    $tcd_master=$_POST['tcd_master'];
+    if (isset($_POST['autorizacion'])) {
+        $autorizacion=$_POST['autorizacion'];
+        $mail_send=$_POST['mail_send'];
+        $number_whatsapp=$_POST['number_whatsapp'];
+    }
     $base_id=$_POST['base_id'];
-
-     // Perform query
-    if (!$mysqli -> query("INSERT INTO `central_risk` (  `name`, `identification`, `civil_status`, `type_dwelling`, `income`, `date_birth`, `phone_contact`, `extension`, `action`, `observation`, `base_id`, `status_id`, `user_id`) VALUES ('$complete_name', ' $identification', '$civil_status', '$type_dwelling', '$income', '$date_birth', '$phone_contact', '$extension', '$action', NULL, '$base_id', NULL, '$user_id');")) {
+    if ($action == "TCD") {
+        $sql= "INSERT INTO `central_risk` (  `name`, `identification`, `civil_status`, `type_dwelling`, `income`, `date_birth`, `phone_contact`, `extension`, `action`, `observation`, `base_id`, `status_id`, `user_id`, `tipo_venta` ,`tcd_visa`, `tcd_master`) VALUES ('$complete_name', ' $identification', '$civil_status', '$type_dwelling', '$income', '$date_birth', '$phone_contact', '$extension', '$action', NULL, '$base_id', NULL, '$user_id', '$tipo_venta', '$tcd_visa', '$tcd_master')";
+    }else{
+        if ($autorizacion == "Correo Electonico") {
+            $sql= "INSERT INTO `central_risk` (  `name`, `identification`, `civil_status`, `type_dwelling`, `income`, `date_birth`, `phone_contact`, `extension`, `action`, `observation`, `base_id`, `status_id`, `user_id`, `tipo_venta`, `autorizacion`, `mail_send`) VALUES ('$complete_name', ' $identification', '$civil_status', '$type_dwelling', '$income', '$date_birth', '$phone_contact', '$extension', '$action', NULL, '$base_id', NULL, '$user_id', '$tipo_venta', '$autorizacion', '$mail_send')";
+        }elseif ($autorizacion == "Whatsapp") {
+            $sql= "INSERT INTO `central_risk` (  `name`, `identification`, `civil_status`, `type_dwelling`, `income`, `date_birth`, `phone_contact`, `extension`, `action`, `observation`, `base_id`, `status_id`, `user_id`, `tipo_venta`, `autorizacion`, `number_whatsapp`) VALUES ('$complete_name', ' $identification', '$civil_status', '$type_dwelling', '$income', '$date_birth', '$phone_contact', '$extension', '$action', NULL, '$base_id', NULL, '$user_id', '$tipo_venta', '$autorizacion', '$number_whatsapp')";
+        }else{
+            $sql= "INSERT INTO `central_risk` (  `name`, `identification`, `civil_status`, `type_dwelling`, `income`, `date_birth`, `phone_contact`, `extension`, `action`, `observation`, `base_id`, `status_id`, `user_id`, `tipo_venta`, `autorizacion`) VALUES ('$complete_name', ' $identification', '$civil_status', '$type_dwelling', '$income', '$date_birth', '$phone_contact', '$extension', '$action', NULL, '$base_id', NULL, '$user_id', '$tipo_venta', '$autorizacion')";
+        }
+        
+    }
+    // Perform query
+    if (!$mysqli -> query($sql)) {
         echo("Error description: " . $mysqli -> error);
     }
 

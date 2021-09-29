@@ -555,8 +555,10 @@
 <script>
     function select_volver_llamar() {
         var x = document.getElementById("select_status").value;
-        if (x === '3') {
+        console.log(x);
+        if (x === '2') {
             document.getElementById('volver_a_llamar').disabled = false
+            document.getElementById('volver_a_llamar').required = true
         }else{
             document.getElementById('volver_a_llamar').disabled = true
         }
@@ -571,6 +573,7 @@
           initialView: 'dayGridMonth',
           events: '../controladores/callback.php',
           locale: 'es',
+          eventColor: '#378006',
           //Evento Click
           eventClick: function(info) {
             // fetch('http://example.com/movies.json')

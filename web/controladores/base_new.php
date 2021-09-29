@@ -67,7 +67,16 @@
     }
     
     $mysqli -> close();
-    header('Location: ../admin/base_new.php?r='.$count);
-    exit;
+    // header('Location: ../admin/base_new.php?r='.$count);
+    // exit;
+
 ?>
-  
+<html>
+    <body onload="load();">
+        <script>
+            function load() {
+                location.replace("../admin/base_new.php?r=<?php echo $count ?>")
+            }
+        </script>
+    </body>
+</html> 
