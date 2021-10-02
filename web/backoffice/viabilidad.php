@@ -9,15 +9,21 @@
     $nombre_usuario=$_SESSION['user'];
     $id_usuario=$_SESSION['id'];
     $campana_id=$_SESSION['campana_id'];
-    
+
    $mysqli = new mysqli("db","db_american_group","4m3r1c4n2021","db");
-    $hoy = date("Y-m-d H:i:s");
 
     // Check connection
     if ($mysqli -> connect_errno) {
         echo "Failed to connect to MySQL: " . $mysqli -> connect_error;
         exit();
     }
+    if ($result_campana = $mysqli -> query("SELECT * FROM `campana` where id=$campana_id")) {
+      while ($reg_campana = $result_campana->fetch_array()) {
+        $prefijo=$reg_campana['prefijo'];
+      }
+    }
+    
+
 ?>  
 
 <!DOCTYPE html>
@@ -35,6 +41,10 @@
   <link rel="stylesheet" href="../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
   <!-- Theme style -->
   <link rel="stylesheet" href="../dist/css/adminlte.min.css">
+  <!-- DataTables -->
+  <link rel="stylesheet" href="../plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet" href="../plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="../plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
 </head>
 <body class="hold-transition  sidebar-mini layout-fixed layout-navbar-fixed layout-footer-fixed">
 <div class="wrapper">
@@ -59,7 +69,26 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <!-- Navbar Search -->
-       
+        <!-- <li class="nav-item">
+            <a class="nav-link" data-widget="navbar-search" href="#" role="button">
+            <i class="fas fa-search"></i>
+            </a>
+            <div class="navbar-search-block">
+            <form class="form-inline" action="../consulta.php" method="POST">
+                <div class="input-group input-group-sm">
+                <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
+                <div class="input-group-append">
+                    <button class="btn btn-navbar" type="submit">
+                    <i class="fas fa-search"></i>
+                    </button>
+                    <button class="btn btn-navbar" type="button" data-widget="navbar-search">
+                    <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                </div>
+            </form>
+            </div>
+        </li> -->
 
       <!-- Messages Dropdown Menu -->
       <li class="nav-item dropdown">
@@ -156,13 +185,13 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
             <li class="nav-header">Menu</li>
             <li class="nav-item active">
-                <a href="./index.php" class="nav-link active">
+                <a href="./index.php" class="nav-link ">
                     <i class="nav-icon fas fa-tasks"></i>
                     <p>Dashboard</p>
                 </a>
             </li>
             <li class="nav-item">
-                <a href="./consulta.php" class="nav-link">
+                <a href="./consulta.php" class="nav-link ">
                     <i class="nav-icon fas fa-users"></i>
                     <p>Consulta</p>
                 </a>
@@ -174,7 +203,7 @@
                 </a>
             </li>
             <li class="nav-item">
-                <a href="./viabilidad.php" class="nav-link ">
+                <a href="./viabilidad.php" class="nav-link active">
                     <i class="nav-icon fa fa-cubes"></i>
                     <p>Viabilidades</p>
                 </a>
@@ -193,12 +222,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0">Dashboard</h1>
+            <h1 class="m-0">Consulta</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="../controladores/router.php">Home</a></li>
-              <li class="breadcrumb-item active">Dashboard</li>
+              <li class="breadcrumb-item active">Consulta</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -208,67 +237,102 @@
 
     <!-- Main content -->
     <section class="content">
+    
         <div class="container-fluid">
-            <!-- Info boxes -->
-            <div class="row">
-                <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box">
-                    <span class="info-box-icon bg-info elevation-1"><i class="fas fa-cog"></i></span>
-
-                    <div class="info-box-content">
-                        <span class="info-box-text">Ventas del mes</span>
-                        <span class="info-box-number">10<small>%</small></span>
-                    </div>
-                    <!-- /.info-box-content -->
-                    </div>
-                    <!-- /.info-box -->
-                </div>
-                <!-- /.col -->
-                <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                    <span class="info-box-icon bg-danger elevation-1"><i class="fas fa-thumbs-up"></i></span>
-
-                    <div class="info-box-content">
-                        <span class="info-box-text">Likes</span>
-                        <span class="info-box-number">41,410</span>
-                    </div>
-                    <!-- /.info-box-content -->
-                    </div>
-                    <!-- /.info-box -->
-                </div>
-                <!-- /.col -->
-
-                <!-- fix for small devices only -->
-                <div class="clearfix hidden-md-up"></div>
-
-                <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                    <span class="info-box-icon bg-success elevation-1"><i class="fas fa-shopping-cart"></i></span>
-
-                    <div class="info-box-content">
-                        <span class="info-box-text">Sales</span>
-                        <span class="info-box-number">760</span>
-                    </div>
-                    <!-- /.info-box-content -->
-                    </div>
-                    <!-- /.info-box -->
-                </div>
-                <!-- /.col -->
-                <div class="col-12 col-sm-6 col-md-3">
-                    <div class="info-box mb-3">
-                    <span class="info-box-icon bg-warning elevation-1"><i class="fas fa-users"></i></span>
-
-                    <div class="info-box-content">
-                        <span class="info-box-text">New Members</span>
-                        <span class="info-box-number">2,000</span>
-                    </div>
-                    <!-- /.info-box-content -->
-                    </div>
-                    <!-- /.info-box -->
-                </div>
-                <!-- /.col -->
+        <?php
+        if (isset($_GET['sa'])) {
+          $valor=$_GET['sa'];
+          switch ($valor) {
+            case '1':
+        ?>
+          <div>
+            <div class="alert alert-warning alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+              <h5><i class="icon fas fa-check"></i>Cuidado!!</h5>
+              Se ha desactivado la base: <strong> <?php echo $_GET['name_base'] ?> </strong>
             </div>
-            <!-- /.row -->
+          </div>
+        <?php
+              break;
+
+            case '2':
+        ?>
+          <div>
+            <div class="alert alert-success alert-dismissible">
+              <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+              <h5><i class="icon fas fa-check"></i>Enhorabuena!!</h5>
+              Se ha activado la base: <strong> <?php echo $_GET['name_base'] ?> </strong>
+            </div>
+          </div>
+        <?php
+              break;
+            
+          }
+        ?>
+        
+        <?php
+        }
+        ?>
+            <!-- Info boxes -->
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Listado de ventas</h3>
+                </div>
+                <!-- /.card-header -->
+                
+                <div class="card-body">
+                  <table id="list_usuarios" class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Nombre Completo</th>
+                            <th>Identificación</th>
+                            <th>Fecha Estado</th>
+                            <th>Name</th>
+                            <th>**</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php
+                        if ($prefijo !== '') {
+                          if ($result = $mysqli -> query("SELECT cr.id,cr.name,cr.identification,v.created_at,s.name as estados FROM `central_risk` as cr inner join viability as v on cr.id=v.central_id inner join status as s on v.status_id=s.id WHERE  cr.`viability` = 1 and v.currrent=1")) {
+                            while ($reg = $result->fetch_array()) {
+                            ?>
+                                <tr>
+                                    <td><?php echo $reg['name'] ?></td>
+                                    <td><?php echo $reg['identification'] ?></td>
+                                    <td><?php echo $reg['created_at'] ?></td>
+                                    <td><?php echo $reg['estados'] ?></td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="#" class="btn btn-info" data-toggle="modal" data-target="#modal-xl" onclick="fetch_form(<?php echo $reg['id'] ?>)"><i class="fas fa-eye"></i></a>
+                                        </div>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="#" class="btn btn-danger" data-toggle="modal" data-target="#modal-xl" onclick="fetch_scheduling(<?php echo $reg['id'] ?>)"><i class="fas fa-pencil-ruler"></i></a>
+                                        </div>
+                                    </td>
+                                </tr>
+                        <?php
+                            }
+                          // Free result set
+                          $result -> free_result();
+                          }
+                        }
+                        ?>    
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th>Nombre Completo</th>
+                            <th>Identificación</th>
+                            <th>Fecha Estado</th>
+                            <th>Name</th>
+                            <th>**</th>
+                        </tr>
+                    </tfoot>
+                  </table>
+                </div>
+              <!-- /.card-body -->
+            </div>
+            <!-- /.card -->
         </div><!--/. container-fluid -->
     </section>
     <!-- /.content -->
@@ -291,7 +355,26 @@
     </footer> -->
 </div>
 <!-- ./wrapper -->
-
+<div class="modal fade" id="modal-xl" style="display: none;" aria-hidden="true">
+  <div class="modal-dialog modal-xl" style="max-width: 90% !important;">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h4 class="modal-title">Información del cliente</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+          </button>
+      </div>
+      <div class="modal-body">
+          <div id="fecth_data"></div>
+      </div>
+      <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+<!-- /.modal-dialog -->
+</div>
 <!-- REQUIRED SCRIPTS -->
 <!-- jQuery -->
 <script src="../plugins/jquery/jquery.min.js"></script>
@@ -308,6 +391,19 @@
 <script src="../plugins/raphael/raphael.min.js"></script>
 <script src="../plugins/jquery-mapael/jquery.mapael.min.js"></script>
 <script src="../plugins/jquery-mapael/maps/usa_states.min.js"></script>
+<!-- DataTables  & Plugins -->
+<script src="../plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="../plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="../plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="../plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="../plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="../plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="../plugins/jszip/jszip.min.js"></script>
+<script src="../plugins/pdfmake/pdfmake.min.js"></script>
+<script src="../plugins/pdfmake/vfs_fonts.js"></script>
+<script src="../plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="../plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="../plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 <!-- ChartJS -->
 <script src="../plugins/chart.js/Chart.min.js"></script>
 
@@ -315,5 +411,55 @@
 <script src="../dist/js/demo.js"></script>
 <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
 <script src="../dist/js/pages/dashboard2.js"></script>
+
+<script>
+  $(function () {
+   
+    $('#list_usuarios').DataTable({
+        responsive:true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 ', '25 ', '50 ', 'Mostrar todo' ]
+        ],
+        buttons: [
+            'pageLength',
+            
+        ],
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
+            buttons: {
+                pageLength: {
+                    _: "Mostrando %d Registros",
+                    '-1': "Mostrar todo"
+                }
+            }
+        }
+    });
+  });
+</script>
+<script>
+    async function fetch_form(data) {      
+    try {
+        let response = await fetch('../controladores/fromData.php?id='+data); // Gets a promise
+        document.getElementById("fecth_data").innerHTML = await response.text(); // Replaces body with response
+    } catch (err) {
+        console.log('Fetch error:' + err); // Error handling
+    }
+    }
+</script>
+<script>
+    async function fetch_scheduling(data) {      
+    try {
+        let response = await fetch('../controladores/fromScheduling.php?id='+data); // Gets a promise
+        document.getElementById("fecth_data").innerHTML = await response.text(); // Replaces body with response
+    } catch (err) {
+        console.log('Fetch error:' + err); // Error handling
+    }
+    }
+</script>
 </body>
 </html>
+<?php
+$mysqli -> close();
+?>

@@ -221,6 +221,12 @@
                     <p>Chat</p>
                 </a>
             </li>
+            <li class="nav-item">
+                <a href="./viabilidad.php" class="nav-link ">
+                    <i class="nav-icon fa fa-cubes"></i>
+                    <p>Viabilidades</p>
+                </a>
+            </li>
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
