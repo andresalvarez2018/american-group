@@ -261,6 +261,19 @@
     <section class="content">
         <div class="container-fluid">
         <?php
+        if (isset($_GET['v'])) {
+        ?>
+        <div>
+          <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+            <h5><i class="icon fas fa-check"></i> Enhorabuena!!</h5>
+            Se ha creado la viabilidad del cliente.
+          </div>
+        </div>
+        <?php
+        }
+      ?>
+      <?php
         if (isset($_GET['s'])) {
         ?>
         <div>
@@ -308,9 +321,25 @@
                         $campana_prefijo=$campana_result['prefijo'];
                         $campana_automatico=$campana_result['automatico'];
                     }
-
                     if ($campana_automatico == 1) {
-                        if ($assigned = $mysqli -> query("SELECT * FROM `base_$campana_prefijo` WHERE `assigned` = 0 AND `processed` = 0 limit 1")) {
+
+                      if ($details_group_jobs = $mysqli -> query("SELECT * from details_group_jobs where user_id=$id_usuario")) {
+                        while ($details_group_jobs_result = $details_group_jobs->fetch_array()) {
+                            $group_jobs_id=$details_group_jobs_result['group_jobs_id'];
+                        }
+                      }
+
+                      if ($bases_group_job = $mysqli -> query("SELECT * FROM `bases_group_job` WHERE `group_jobs_id` = $group_jobs_id")) {
+                        $base_group_in="";
+                        while ($bases_group_job_result = $bases_group_job->fetch_array()) {
+                            $base_id_id=$bases_group_job_result['base_id'];
+                            $base_group_in .= $base_id_id . ',';
+                        }
+                        $base_group_in = substr($base_group_in, 0, -1);
+                      }
+                      
+
+                        if ($assigned = $mysqli -> query("SELECT * FROM `base_$campana_prefijo` WHERE `assigned` = 0 AND `processed` = 0 and archivo_id in ($base_group_in)limit 1")) {
                             if ($assigned_result = $assigned->fetch_array()) {
                                 $id_reg=$assigned_result['id'];
                                 if (!$mysqli -> query("UPDATE `base_$campana_prefijo` SET `assigned` = '1',assigned_at='$hoy',user_assigned=$id_usuario WHERE `base_$campana_prefijo`.`id` = $id_reg ;")) {
@@ -362,7 +391,7 @@
                                                                   <select class="form-control" id="select_status" required name="status" onchange="select_volver_llamar()">
                                                                       <option disabled selected>Seleccione...</option>
                                                                       <?php 
-                                                                          if ($status = $mysqli -> query("SELECT * FROM `status`")) {
+                                                                          if ($status = $mysqli -> query("SELECT * FROM `status` WHERE `sector` = 1 ORDER BY `status`.`name` ASC")) {
                                                                               while ($status_result = $status->fetch_array()) {
                                                                       ?>
                                                                       <option value="<?php echo $status_result['id'] ?>"><?php echo $status_result['name'] ?></option>
@@ -445,7 +474,7 @@
                                                             <select class="form-control" id="select_status" required name="status" onchange="select_volver_llamar()">
                                                                 <option disabled selected>Seleccione...</option>
                                                                 <?php 
-                                                                    if ($status = $mysqli -> query("SELECT * FROM `status`")) {
+                                                                    if ($status = $mysqli -> query("SELECT * FROM `status` WHERE `sector` = 1 ORDER BY `status`.`name` ASC")) {
                                                                         while ($status_result = $status->fetch_array()) {
                                                                 ?>
                                                                 <option value="<?php echo $status_result['id'] ?>"><?php echo $status_result['name'] ?></option>
@@ -525,7 +554,86 @@
     </footer> -->
 </div>
 <!-- ./wrapper -->
-
+<div class="modal fade" id="modal-xl" style="display: none;" aria-hidden="true">
+  <div class="modal-dialog modal-xl" style="max-width: 90% !important;">
+    <div class="modal-content">
+      <div class="modal-header">
+          <h4 id="modalTitle" class="modal-title"></h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+          </button>
+      </div>
+      <div class="modal-body">
+        <div class="card">
+          <div class="card-body">
+              <form action="../controladores/action_process.php" method="POST">
+                  <table style="width: 100%; margin-left: auto; margin-right: auto;" cellpadding="25">
+                      <thead>
+                          <tr>
+                              <th style="text-align: center;"><h4>Datos del cliente</h4></th>
+                              <th style="text-align: center;"><h4>Tipificación y observación</h4></th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr>
+                              <td>
+                                  <div class="input-group mb-3">
+                                      <label class="input-group-text" id="basic-addon3">Nombre Completo</label>
+                                      <input type="text" class="form-control" id="modal_name" aria-describedby="basic-addon3" disabled value="">
+                                  </div>
+                                  <div class="input-group mb-3">
+                                      <label class="input-group-text" id="basic-addon3">Identificación</label>
+                                      <input type="text" class="form-control" id="modal_identification" aria-describedby="basic-addon3" disabled value="">
+                                  </div>
+                                  <div class="input-group mb-3">
+                                      <label class="input-group-text" id="basic-addon3">Teléfono</label>
+                                      <input type="text" class="form-control" id="modal_phone" aria-describedby="basic-addon3" disabled value="">
+                                  </div>
+                              </td>
+                              <td>
+                                  <div class="input-group">
+                                      <label class="input-group-text">Observaciones</label>
+                                      <textarea class="form-control" id="modal_observation" aria-label="With textarea" rows="10" required name="observation"></textarea>
+                                  </div>
+                                  <div class="input-group mb-3">
+                                      <label class="input-group-text" for="inputGroupSelect01">Tipificaciones</label>
+                                      <select class="form-control" id="select_status_modal" required name="status" onchange="select_volver_llamar_modal()">
+                                          <option disabled selected>Seleccione...</option>
+                                          <?php 
+                                              if ($status = $mysqli -> query("SELECT * FROM `status` WHERE `sector` = 1 ORDER BY `status`.`name` ASC")) {
+                                                  while ($status_result = $status->fetch_array()) {
+                                          ?>
+                                          <option value="<?php echo $status_result['id'] ?>"><?php echo $status_result['name'] ?></option>
+                                          <?php 
+                                                  }
+                                              }
+                                          ?>
+                                      </select>
+                                  </div>
+                                  <div class="input-group mb-3">
+                                      <label class="input-group-text" for="inputGroupSelect01">Volver a llamar</label>
+                                      <input type="datetime-local" class="form-control" id="volver_a_llamar_modal" name="callback" aria-describedby="basic-addon3" disabled/>
+                                  </div>
+                              </td>
+                          </tr>
+                          <tr>
+                              <input type="hidden" id="id_reg" name="id_reg" value=""/>
+                              <td colspan="2"><button type="SUBMIT" class="btn btn-outline-primary btn-block">Enviar Información</button></td>
+                          </tr>
+                      </tbody>
+                  </table>
+              </form>
+          </div>
+      </div>
+      </div>
+      <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+<!-- /.modal-dialog -->
+</div>
 <!-- REQUIRED SCRIPTS -->
 <!-- jQuery -->
 <script src="../plugins/jquery/jquery.min.js"></script>
@@ -552,6 +660,7 @@
 <!-- fullCalendar 2.2.5 -->
 <script src="../plugins/moment/moment.min.js"></script>
 <script src="../plugins/fullcalendar/main.js"></script>
+<script src='../plugins/fullcalendar/locales/es.js'></script>
 <script>
     function select_volver_llamar() {
         var x = document.getElementById("select_status").value;
@@ -563,6 +672,16 @@
             document.getElementById('volver_a_llamar').disabled = true
         }
     }
+    function select_volver_llamar_modal() {
+        var x = document.getElementById("select_status_modal").value;
+        console.log(x);
+        if (x === '2') {
+            document.getElementById('volver_a_llamar_modal').disabled = false
+            document.getElementById('volver_a_llamar_modal').required = true
+        }else{
+            document.getElementById('volver_a_llamar_modal').disabled = true
+        }
+    }
 </script>
 <!-- Page specific script -->
 <script>
@@ -570,19 +689,20 @@
       document.addEventListener('DOMContentLoaded', function() {
         var calendarEl = document.getElementById('calendar');
         var calendar = new FullCalendar.Calendar(calendarEl, {
-          initialView: 'dayGridMonth',
+          initialView: 'timeGridWeek',
           events: '../controladores/callback.php',
           locale: 'es',
           eventColor: '#378006',
           //Evento Click
           eventClick: function(info) {
-            // fetch('http://example.com/movies.json')
-            // .then(response => response.json())
-            // .then(data => console.log(data));
-            // // change the border color just for fun
-            // info.el.style.borderColor = 'red';
-
-            alert("evento clickeado");
+            console.log(info);
+            $('#modalTitle').html(info.event._def.title);
+            document.getElementById("modal_name").value = info.event._def.title;
+            document.getElementById("modal_identification").value = info.event._def.extendedProps.identification;
+            document.getElementById("modal_phone").value = info.event._def.extendedProps.phone_number;
+            document.getElementById("modal_observation").value = info.event._def.extendedProps.observation;
+            document.getElementById("id_reg").value = info.event._def.extendedProps.base_id;
+            $('#modal-xl').modal();
           }
         });
         calendar.render();

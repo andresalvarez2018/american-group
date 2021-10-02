@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET')
 	  }
     else {
       //Mostrar lista de post
-      $sql = $dbConn->prepare("SELECT * FROM posts");
+      $sql = $dbConn->prepare("SELECT c.send_user_id,c.receiver_user_id,u.complete_name as send ,u1.complete_name as receiver,c.message,c.created_at,u.url_image,u1.url_image FROM `chat` as c inner join user as u on c.send_user_id=u.id inner join user as u1 on c.receiver_user_id=u1.id");
       $sql->execute();
       $sql->setFetchMode(PDO::FETCH_ASSOC);
       header("HTTP/1.1 200 OK");

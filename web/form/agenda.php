@@ -222,7 +222,23 @@
                               </div>
                               <div class="form-group col-sm-6 ">
                                   <label for="exampleInputEmail1">Compra de cartera</label>
-                                  <input type="text" name="purchase_portfolio" class="form-control" id="purchase_portfolio" placeholder="Compra de cartera" required>
+                                  <select class="form-control" name="purchase_portfolio" id="purchase_portfolio" aria-label="Default select example" name="trip" required onchange=purchase_change()>
+                                      <option disabled selected>Seleccione...</option>
+                                      <option value="Si">Si</option>
+                                      <option value="No">No</option>
+                                  </select>
+                              </div>
+                              <div class="form-group col-sm-6" style="display:none" id="banco_div">
+                                  <label for="exampleInputEmail1">Banco Asociado</label>
+                                  <input type="text" name="banco" class="form-control" id="banco" placeholder="Banco" >
+                              </div>
+                              <div class="form-group col-sm-6 " style="display:none" id="score_div">
+                                  <label for="exampleInputEmail1">Puntaje</label>
+                                  <input type="text" name="score" class="form-control" id="score" placeholder="Puntaje" >
+                              </div>
+                              <div class="form-group col-sm-6 " style="display:none" id="purchase_value_div">
+                                  <label for="exampleInputEmail1">Valor Compra</label>
+                                  <input type="text" name="purchase_value" class="form-control" id="purchase_value" placeholder="Valor Compra" >
                               </div>
                               <div class="form-group col-sm-6 ">
                                   <label for="exampleInputEmail1">Observaciones</label>
@@ -290,6 +306,30 @@
     function textAreaAdjust(element) {
         element.style.height = "1px";
         element.style.height = (25+element.scrollHeight)+"px";
+    }
+
+    function purchase_change() {
+      var x = document.getElementById("purchase_portfolio").value;
+      switch (x) {
+        case 'Si':
+            document.getElementById("banco_div").style.display = "block";
+            document.getElementById("score_div").style.display = "block";
+            document.getElementById("purchase_value_div").style.display = "block";
+
+            document.getElementById("banco").required = true;
+            document.getElementById("score").required = true;
+            document.getElementById("purchase_value").required = true;
+          break;
+
+        case 'No':
+            document.getElementById("banco_div").style.display = "none";
+            document.getElementById("score_div").style.display = "none";
+            document.getElementById("purchase_value_div").style.display = "none";
+            document.getElementById("banco").required = false;
+            document.getElementById("score").required = false;
+            document.getElementById("purchase_value").required = false;
+          break;
+      }
     }
 </script>
 </body>

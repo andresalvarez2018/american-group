@@ -13,8 +13,25 @@
     
     $base_id=$_POST['base_id'];
 
-        header('Location: ../form/agenda.php?id='.$base_id);
-        exit;
+    if ($central_risk = $mysqli -> query("SELECT * FROM `central_risk` WHERE `id` = $base_id")) {
+        while ($central_risk_result = $central_risk->fetch_array()) {
+            $action=$central_risk_result['action'];
+        }
+    }
+    
+    switch ($action) {
+        case 'Prestamo':
+            header('Location: ../asesor/gestionar.php?v=1');
+            exit; 
+        break;
+        
+        case 'TCD':
+            header('Location: ../form/agenda.php?id='.$base_id);
+            exit;    
+        break;
+       
+    }
+    
     
     
     

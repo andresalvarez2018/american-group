@@ -22,8 +22,33 @@
     if (!$mysqli -> query("UPDATE `central_risk` SET `status_id` = '$status_central',`observation` = '$observation_supervisor', `response_supervisory` = 1,`response_user_id` = $id_usuario WHERE `central_risk`.`id` = $base_id")) {
         echo("Error description: " . $mysqli -> error);
     }
-    $mysqli -> close();
 
+    if ($central_risk = $mysqli -> query("SELECT * FROM `central_risk` WHERE `id` = $base_id")) {
+        while ($central_risk_result = $central_risk->fetch_array()) {
+            $action=$central_risk_result['action'];
+        }
+    }
+    
+    switch ($action) {
+        case 'Prestamo':
+
+            if ($status_central == "17") {
+                // Perform query
+                if (!$mysqli -> query("UPDATE `central_risk` SET `viability` = '1' WHERE `central_risk`.`id` = $base_id")) {
+                    echo("Error description: " . $mysqli -> error);
+                }
+                // Perform query
+                if (!$mysqli -> query("INSERT INTO `viability` (`id`, `created_at`, `central_id`, `status_id`, `user_id`, `currrent`) VALUES (NULL, current_timestamp(), '$base_id', '30', '$id_usuario', '1')")) {
+                    echo("Error description: " . $mysqli -> error);
+                }
+            }
+            
+        break;
+        
+    }
+    
+    $mysqli -> close();
+    
     header('Location: ../supervisor/central.php?s=1');
     exit;
 ?>

@@ -5,6 +5,7 @@ include "utils.php";
 $dbConn =  connect($db);
 $id_usuario=$_SESSION['id'];
 $role_id=$_SESSION["role_id"];
+$campana_id=$_SESSION["campana_id"];
 /*
   listar todos los posts o solo uno
  */
@@ -15,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET')
     $start=$_GET['start'];
     $end=$_GET['end'];
       //Mostrar un post
-      $sql = $dbConn->prepare("SELECT callback as start FROM `base_occidente` WHERE `status_id` = 2 and user_assigned=$id_usuario");
+      $sql = $dbConn->prepare("SELECT callback as start,callback as end ,complete_name as title, identification, phone_number,observation,id as base_id FROM `base_occidente` WHERE `status_id` = 2 and user_assigned=$id_usuario");
       $sql->bindValue(':id', $_GET['start']);
       $sql->execute();
       $sql->setFetchMode(PDO::FETCH_ASSOC);
@@ -23,7 +24,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET')
       echo json_encode( $sql->fetchAll()  );
       exit();
 	  }
-    else {
+    elseif (isset($_GET['id'])) {
+
       //Mostrar lista de post
       $sql = $dbConn->prepare("SELECT callback as start FROM `base_occidente` WHERE `status_id` = 2 and user_assigned=$id_usuario");
       $sql->execute();
