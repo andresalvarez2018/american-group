@@ -9,7 +9,8 @@
     $nombre_usuario=$_SESSION['user'];
     $id_usuario=$_SESSION['id'];
     $campana_id=$_SESSION['campana_id'];
-   $mysqli = new mysqli("db","db_american_group","4m3r1c4n2021","db");
+      $mysqli = new mysqli("localhost","root","","db");
+
 
     // Check connection
     if ($mysqli -> connect_errno) {
@@ -269,7 +270,7 @@
                         </thead>
                         <tbody>
                         <?php
-                            if ($result = $mysqli -> query("SELECT cr.id,cr.name,cr.identification,sso.created_at,s.name as estado FROM central_risk as cr inner join scheduling_occidente as so on so.central_risk_id=cr.id inner join scheduling_status_occidente as sso on so.id=sso.scheduling_id inner join status as s on s.id=sso.status_id where cr.user_id=7 and sso.current=1 and date_format(sso.created_at,'%m') = date_format(now(),'%m')")) {
+                            if ($result = $mysqli -> query("SELECT cr.id,cr.name,cr.identification,sso.created_at,s.name as estado FROM central_risk as cr inner join scheduling_occidente as so on so.central_risk_id=cr.id inner join scheduling_status_occidente as sso on so.id=sso.scheduling_id inner join status as s on s.id=sso.status_id where cr.user_id=$id_usuario and sso.current=1 and date_format(sso.created_at,'%m') = date_format(now(),'%m')")) {
                                 while ($reg = $result->fetch_array()) {
                                 ?>
                                 <tr>

@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET')
     $start=$_GET['start'];
     $end=$_GET['end'];
       //Mostrar un post
-      $sql = $dbConn->prepare("SELECT callback as start,callback as end ,complete_name as title, identification, phone_number,observation,id as base_id FROM `base_occidente` WHERE `status_id` = 2 and user_assigned=$id_usuario");
+      $sql = $dbConn->prepare("SELECT callback as start,callback as end ,'Nombre Protegido' as title, identification, phone_number,observation,id as base_id FROM `base_occidente` WHERE `status_id` = 2 and user_assigned=$id_usuario");
       $sql->bindValue(':id', $_GET['start']);
       $sql->execute();
       $sql->setFetchMode(PDO::FETCH_ASSOC);

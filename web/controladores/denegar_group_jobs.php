@@ -7,7 +7,8 @@
     }
     $select_group_job=$_POST["select_group_job"];
     $base_id=$_POST["base_id"];
-   $mysqli = new mysqli("db","db_american_group","4m3r1c4n2021","db");
+      $mysqli = new mysqli("localhost","root","","db");
+
     
      // Perform query
     if (!$mysqli -> query("DELETE FROM `bases_group_job` WHERE group_jobs_id=$select_group_job and base_id=$base_id")) {

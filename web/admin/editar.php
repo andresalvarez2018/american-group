@@ -16,7 +16,8 @@
     $id_usuario=$_SESSION['id'];
     $id_user=$_GET['id'];
 
-   $mysqli = new mysqli("db","db_american_group","4m3r1c4n2021","db");
+      $mysqli = new mysqli("localhost","root","","db");
+
 
     // Check connection
     if ($mysqli -> connect_errno) {
@@ -25,9 +26,10 @@
     }
 
     // Perform query
-    if ($result_user = $mysqli -> query("SELECT complete_name,url_image,c.name as campana_name,c.id as campana_id,gj.name as grupo_job FROM `user` left join campana as c on c.id=user.campana_id left join details_group_jobs as dgj on dgj.user_id=user.id left join group_jobs as gj on gj.id=dgj.group_jobs_id WHERE user.id=$id_user")) {
+    if ($result_user = $mysqli -> query("SELECT username,complete_name,url_image,c.name as campana_name,c.id as campana_id,gj.name as grupo_job FROM `user` left join campana as c on c.id=user.campana_id left join details_group_jobs as dgj on dgj.user_id=user.id left join group_jobs as gj on gj.id=dgj.group_jobs_id WHERE user.id=$id_user")) {
       while ($reg_user = $result_user->fetch_array()) {
           $complete_name_user=$reg_user['complete_name'];
+          $username=$reg_user['username'];
           $campana_name=$reg_user['campana_name'];
           $campana_id=$reg_user['campana_id'];
           $grupo_job=$reg_user['grupo_job'];
@@ -308,9 +310,13 @@
               <!-- form start -->
               <form id="quickForm" enctype="multipart/form-data" method="POST" action="../controladores/update_user.php">
                 <div class="card-body">
-                  <div class="form-group">
+                <div class="form-group">
                     <label for="exampleInputEmail1">Nombre Completo</label>
                     <input type="text" name="user_name" class="form-control" id="exampleInputEmail1" placeholder="Ingrese Nombre Completo" value="<?php echo $complete_name_user ?>">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Username</label>
+                    <input type="text"  class="form-control" id="exampleInputEmail1" placeholder="Ingrese Nombre Completo" value="<?php echo $username ?>" disabled>
                   </div>
                   <div class="form-group">
                     <div class="custom-file">

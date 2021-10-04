@@ -8,7 +8,8 @@
 
     $nombre_usuario=$_SESSION['user'];
     $campana_id=$_SESSION["campana_id"];
-   $mysqli = new mysqli("db","db_american_group","4m3r1c4n2021","db");
+      $mysqli = new mysqli("localhost","root","","db");
+
 
     // Check connection
     if ($mysqli -> connect_errno) {

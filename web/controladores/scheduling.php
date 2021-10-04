@@ -7,7 +7,8 @@
     }
     $hoy = date("Y-m-d H:i:s");
 
-   $mysqli = new mysqli("db","db_american_group","4m3r1c4n2021","db");
+      $mysqli = new mysqli("localhost","root","","db");
+
 
     $user_id=$_SESSION["id"];
 
@@ -33,12 +34,12 @@
     $id_create=$mysqli->insert_id;
 
     // Perform query
-    if (!$mysqli -> query("INSERT INTO `scheduling_status_occidente`(`scheduling_id`, `status_id`, `current`, `user_id`, `notes`) VALUES ($id_create',12,1,'$user_id','agendado')")) {
+    if (!$mysqli -> query("INSERT INTO `scheduling_status_occidente`(`scheduling_id`, `status_id`, `current`, `user_id`, `notes`) VALUES ('$id_create',12,1,'$user_id','preagendado')")) {
         echo("Error description: " . $mysqli -> error);
     }
 
     if($purchase_portfolio == "Si"){
-        if (!$mysqli -> query("UPDATE `scheduling_occidente` SET `banco` = '$banco', `score` = '$score', `purchase_value` = '$purchase_value' WHERE `scheduling_occidente`.`id` = $id_create;")) {
+        if (!$mysqli -> query("UPDATE `scheduling_opreccidente` SET `banco` = '$banco', `score` = '$score', `purchase_value` = '$purchase_value' WHERE `scheduling_occidente`.`id` = $id_create;")) {
             echo("Error description: " . $mysqli -> error);
         }
     }

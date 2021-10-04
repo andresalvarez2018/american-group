@@ -10,7 +10,8 @@
     $id_usuario=$_SESSION['id'];
     $campana_id=$_SESSION['campana_id'];
 
-   $mysqli = new mysqli("db","db_american_group","4m3r1c4n2021","db");
+      $mysqli = new mysqli("localhost","root","","db");
+
     $hoy = date("Y-m-d H:i:s");
 
     // Check connection
@@ -370,11 +371,11 @@
                                                           <td>
                                                               <div class="input-group mb-3">
                                                                   <label class="input-group-text" id="basic-addon3">Nombre Completo</label>
-                                                                  <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" disabled value="<?php echo $complete_name?>">
+                                                                  <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" disabled value="Nombre Protegido">
                                                               </div>
                                                               <div class="input-group mb-3">
                                                                   <label class="input-group-text" id="basic-addon3">Identificación</label>
-                                                                  <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" disabled value="<?php echo $identification?>">
+                                                                  <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" disabled value="Identificacion protegida">
                                                               </div>
                                                               <div class="input-group mb-3">
                                                                   <label class="input-group-text" id="basic-addon3">Teléfono</label>
@@ -384,7 +385,7 @@
                                                           <td>
                                                               <div class="input-group">
                                                                   <label class="input-group-text">Observaciones</label>
-                                                                  <textarea class="form-control" aria-label="With textarea" rows="10" required name="observation"></textarea>
+                                                                  <textarea class="form-control" aria-label="With textarea" rows="10"  name="observation"></textarea>
                                                               </div>
                                                               <div class="input-group mb-3">
                                                                   <label class="input-group-text" for="inputGroupSelect01">Tipificaciones</label>
@@ -453,11 +454,11 @@
                                                     <td>
                                                         <div class="input-group mb-3">
                                                             <label class="input-group-text" id="basic-addon3">Nombre Completo</label>
-                                                            <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" disabled value="<?php echo $complete_name?>">
+                                                            <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" disabled value="Nombre Protegido>">
                                                         </div>
                                                         <div class="input-group mb-3">
                                                             <label class="input-group-text" id="basic-addon3">Identificación</label>
-                                                            <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" disabled value="<?php echo $identification?>">
+                                                            <input type="text" class="form-control" id="basic-url" aria-describedby="basic-addon3" disabled value="Identifiacion protegida>">
                                                         </div>
                                                         <div class="input-group mb-3">
                                                             <label class="input-group-text" id="basic-addon3">Teléfono</label>
@@ -467,7 +468,7 @@
                                                     <td>
                                                         <div class="input-group">
                                                             <label class="input-group-text">Observaciones</label>
-                                                            <textarea class="form-control" aria-label="With textarea" rows="10" required name="observation"></textarea>
+                                                            <textarea class="form-control" aria-label="With textarea" rows="10"  name="observation"></textarea>
                                                         </div>
                                                         <div class="input-group mb-3">
                                                             <label class="input-group-text" for="inputGroupSelect01">Tipificaciones</label>
@@ -697,11 +698,14 @@
           eventClick: function(info) {
             console.log(info);
             $('#modalTitle').html(info.event._def.title);
-            document.getElementById("modal_name").value = info.event._def.title;
-            document.getElementById("modal_identification").value = info.event._def.extendedProps.identification;
+            //document.getElementById("modal_name").value = info.event._def.title;
+            //document.getElementById("modal_identification").value = info.event._def.extendedProps.identification;
             document.getElementById("modal_phone").value = info.event._def.extendedProps.phone_number;
             document.getElementById("modal_observation").value = info.event._def.extendedProps.observation;
             document.getElementById("id_reg").value = info.event._def.extendedProps.base_id;
+            document.getElementById("modal_name").value = "Nombre Protegido";
+            //document.getElementById("modal_phone").value = "Nombre Protegido";
+            document.getElementById("modal_identification").value = "Nombre Protegido";
             $('#modal-xl').modal();
           }
         });

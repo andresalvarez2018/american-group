@@ -11,7 +11,8 @@ if ($pass_1 !== $pass_2) {
     exit;
 }
 $pass_1 = md5($pass_1); 
-$mysqli = new mysqli("db","db_american_group","4m3r1c4n2021","db");
+$mysqli = new mysqli("localhost","root","","db");
+
 
 // Check connection
 if ($mysqli -> connect_errno) {
