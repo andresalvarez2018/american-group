@@ -7,7 +7,7 @@
     }
     $select_group_job=$_POST["select_group_job"];
     $base_id=$_POST["base_id"];
-      $mysqli = new mysqli("localhost","root","","db");
+      $mysqli = new mysqli("db","db_american_group","4m3r1c4n2021","db");
 
     
      // Perform query

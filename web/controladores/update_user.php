@@ -8,7 +8,7 @@
 
     $user_id=$_POST['id_user'];
     $user_name=$_POST["user_name"];
-      $mysqli = new mysqli("localhost","root","","db");
+      $mysqli = new mysqli("db","db_american_group","4m3r1c4n2021","db");
 
      // Check connection
     if ($mysqli -> connect_errno) {

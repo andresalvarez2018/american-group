@@ -8,7 +8,7 @@
 
     $nombre_usuario=$_SESSION['user'];
     $campana_id=$_SESSION["campana_id"];
-      $mysqli = new mysqli("localhost","root","","db");
+      $mysqli = new mysqli("db","db_american_group","4m3r1c4n2021","db");
 
 
     // Check connection
@@ -32,6 +32,7 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">

@@ -5,7 +5,7 @@ $user=$_POST['user'];
 $pass=$_POST['password'];
 $pass = md5($pass);
 
-$mysqli = new mysqli("localhost","root","","db");
+$mysqli = new mysqli("db","db_american_group","4m3r1c4n2021","db");
 
 
 // Check connection

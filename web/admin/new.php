@@ -8,7 +8,7 @@
 
     $nombre_usuario=$_SESSION['user'];
 
-      $mysqli = new mysqli("localhost","root","","db");
+      $mysqli = new mysqli("db","db_american_group","4m3r1c4n2021","db");
 
 
     // Check connection
@@ -29,9 +29,11 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Group American</title>
+
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">

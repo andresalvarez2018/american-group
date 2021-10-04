@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET')
     {
     $idchat=$_GET['idchat'];
       //Mostrar un post
-      $sql = $dbConn->prepare("SELECT c.send_user_id,c.receiver_user_id,u.complete_name as send ,u1.complete_name as receiver,c.message,c.created_at,u.url_image,u1.url_image FROM `chat` as c inner join user as u on c.send_user_id=u.id inner join user as u1 on c.receiver_user_id=u1.id WHERE (c.`send_user_id` = $id_usuario AND c.`receiver_user_id` = $idchat) or (c.`send_user_id` = $idchat AND c.`receiver_user_id` = $id_usuario) order by c.created_at asc");
+      $sql = $dbConn->prepare("SELECT c.send_user_id,c.receiver_user_id,u.complete_name as send ,u1.complete_name as receiver,c.message,c.created_at,u.url_image,u1.url_image FROM `chat` as c inner join user as u on c.send_user_id=u.id inner join user as u1 on c.send_user_id=u1.id WHERE (c.`send_user_id` = $id_usuario AND c.`receiver_user_id` = $idchat) or (c.`send_user_id` = $idchat AND c.`receiver_user_id` = $id_usuario) order by c.created_at asc");
       $sql->bindValue(':id', $_GET['idchat']);
       $sql->execute();
       $sql->setFetchMode(PDO::FETCH_ASSOC);
@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET')
 	  }
     else {
       //Mostrar lista de post
-      $sql = $dbConn->prepare("SELECT c.send_user_id,c.receiver_user_id,u.complete_name as send ,u1.complete_name as receiver,c.message,c.created_at,u.url_image,u1.url_image FROM `chat` as c inner join user as u on c.send_user_id=u.id inner join user as u1 on c.receiver_user_id=u1.id");
+      $sql = $dbConn->prepare("SELECT c.send_user_id,c.receiver_user_id,u.complete_name as send ,u1.complete_name as receiver,c.message,c.created_at,u.url_image,u1.url_image FROM `chat` as c inner join user as u on c.send_user_id=u.id inner join user as u1 on c.send_user_id=u1.id");
       $sql->execute();
       $sql->setFetchMode(PDO::FETCH_ASSOC);
       header("HTTP/1.1 200 OK");
