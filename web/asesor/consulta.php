@@ -162,7 +162,7 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="<?php echo $_SESSION['url_image'] ?>" class="img-circle elevation-2" alt="User Image">
+          <img src="<?php echo $_SESSION['url_image'] ?>" class="img-circle elevation-2" alt="User Image" style="width: 3.1rem;height: 3.1rem;">
         </div>
         <div class="info">
           <a href="#" class="d-block"><?php echo $nombre_usuario ?></a>
@@ -391,6 +391,32 @@
         console.log('Fetch error:' + err); // Error handling
     }
     }
+</script>
+<script>
+  $(function () {
+   
+    $('#list_usuarios').DataTable({
+        responsive:true,
+        dom: 'Bfrtip',
+        lengthMenu: [
+            [ 10, 25, 50, -1 ],
+            [ '10 ', '25 ', '50 ', 'Mostrar todo' ]
+        ],
+        buttons: [
+            'pageLength',
+            
+        ],
+        "language": {
+            "url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json",
+            buttons: {
+                pageLength: {
+                    _: "Mostrando %d Registros",
+                    '-1': "Mostrar todo"
+                }
+            }
+        }
+    });
+  });
 </script>
 </body>
 </html>

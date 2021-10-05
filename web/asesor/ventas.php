@@ -162,7 +162,7 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="<?php echo $_SESSION['url_image'] ?>" class="img-circle elevation-2" alt="User Image">
+          <img src="<?php echo $_SESSION['url_image'] ?>" class="img-circle elevation-2" alt="User Image" style="width: 3.1rem;height: 3.1rem;">
         </div>
         <div class="info">
           <a href="#" class="d-block"><?php echo $nombre_usuario ?></a>
@@ -215,6 +215,12 @@
                 <a href="./chat.php" class="nav-link">
                     <i class="nav-icon fas fa-comments"></i>
                     <p>Chat</p>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a href="./referido.php" class="nav-link">
+                    <i class="nav-icon fas fa-user-tag"></i>
+                    <p>Referido</p>
                 </a>
             </li>
             <li class="nav-item">

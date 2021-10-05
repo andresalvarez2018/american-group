@@ -167,7 +167,7 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="<?php echo $_SESSION['url_image'] ?>" class="img-circle elevation-2" alt="User Image">
+          <img src="<?php echo $_SESSION['url_image'] ?>" class="img-circle elevation-2" alt="User Image" style="width: 3.1rem;height: 3.1rem;">
         </div>
         <div class="info">
           <a href="#" class="d-block"><?php echo $nombre_usuario ?></a>
@@ -340,7 +340,7 @@
                   <div class="form-group">
                     <div class="custom-file">
                       <label for="formFile" class="form-label">Cargar la foto del usuario</label>
-                      <input class="form-control" type="file" id="formFile" accept="image/*" name="user_photo">
+                      <input class="form-control" type="file" id="formFile" accept="image/*" name="user_photo" required>
                     </div>
                   </div>
                 </div>  

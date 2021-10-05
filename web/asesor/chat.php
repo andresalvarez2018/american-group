@@ -28,7 +28,7 @@
     // Perform query
     if ($result_user_logueado = $mysqli -> query("SELECT * FROM `user` WHERE id=$id_usuario")) {
       while ($reg_user_loagueado = $result_user_logueado->fetch_array()) {
-        $url_image_user_logueado=$reg_user_loagueado['url_image'];
+        $url_image_user_logueado=$reg_user_loagueado['url_image'] ;
       }
 
       // Free result set
@@ -291,7 +291,7 @@
                       <ul class="contacts-list">
                       <?php
                         // Perform query
-                        if ($result_user_chat = $mysqli -> query("SELECT * FROM `user` WHERE `id` NOT IN ($id_usuario) and role_id NOT IN (1)")) {
+                        if ($result_user_chat = $mysqli -> query("SELECT * FROM `user` WHERE `id` NOT IN ($id_usuario) and role_id NOT IN (1) and is_active=1")) {
                           while ($reg_user_chat = $result_user_chat->fetch_array()) {
                             $reg_user_chat_url_image=$reg_user_chat['url_image'];
                             $reg_user_chat_complete_name=$reg_user_chat['complete_name'];
@@ -300,7 +300,7 @@
                       ?>
                         <li style="background: #353a40;" >
                           <a href="#" class="item_chat" id=<?php echo $reg_user_chat_id ?>>
-                            <img class="contacts-list-img" src="<?php echo $reg_user_chat_url_image ?>">
+                            <img class="contacts-list-img" src="<?php echo $reg_user_chat_url_image ?>" style="width: 3rem;height: 3rem;">
                             <div class="contacts-list-info">
                               <span class="contacts-list-name">
                                 <?php echo $reg_user_chat_complete_name ?>

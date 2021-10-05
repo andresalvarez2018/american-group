@@ -279,7 +279,7 @@
                       ?>
                         <li style="background: #353a40;" >
                           <a href="#" class="item_chat" id=<?php echo $reg_user_chat_id ?>>
-                            <img class="contacts-list-img" src="<?php echo $reg_user_chat_url_image ?>">
+                            <img class="contacts-list-img" src="<?php echo $reg_user_chat_url_image ?>" style="width: 3rem;height: 3rem;">
                             <div class="contacts-list-info">
                               <span class="contacts-list-name">
                                 <?php echo $reg_user_chat_complete_name ?>

@@ -233,6 +233,7 @@
                     <p>Referido</p>
                 </a>
             </li>
+            
         </ul>
       </nav>
       <!-- /.sidebar-menu -->
@@ -698,7 +699,6 @@
           eventColor: '#378006',
           //Evento Click
           eventClick: function(info) {
-            console.log(info);
             $('#modalTitle').html(info.event._def.title);
             //document.getElementById("modal_name").value = info.event._def.title;
             //document.getElementById("modal_identification").value = info.event._def.extendedProps.identification;

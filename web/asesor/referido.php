@@ -158,7 +158,7 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="<?php echo $_SESSION['url_image'] ?>" class="img-circle elevation-2" alt="User Image">
+          <img src="<?php echo $_SESSION['url_image'] ?>" class="img-circle elevation-2" alt="User Image" style="width: 3.1rem;height: 3.1rem;">
         </div>
         <div class="info">
           <a href="#" class="d-block"><?php echo $nombre_usuario ?></a>
@@ -255,8 +255,23 @@
                     <h3 class="card-title">Crear un referido</h3>
                 </div>
                 <!-- /.card-header -->
-                  
-                    
+                <div class="card-body">
+                  <form action="../controladores/referido_new.php" method="POST">
+                    <div class="form-group">
+                      <label for="exampleFormControlInput1">Nombre Completo</label>
+                      <input type="text" class="form-control" id="exampleFormControlInput1" placeholder="Nombre Completo" required name="complete_name">
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleFormControlInput2">Número de Identificación</label>
+                      <input type="text" class="form-control" id="exampleFormControlInput2" placeholder="Número de Identificación" required name="identification">
+                    </div>
+                    <div class="form-group">
+                      <label for="exampleFormControlInput3">Número de telefono</label>
+                      <input type="text" class="form-control" id="exampleFormControlInput3" placeholder="Número de telefono" required name="phone_number">
+                    </div>
+                    <button type="submit" class="btn btn-outline-primary btn-block">Crear Cliente</button>
+                  </form>
+                </div>
             </div>
             <!-- /.row -->
         </div><!--/. container-fluid -->

@@ -158,7 +158,7 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="<?php echo $_SESSION['url_image'] ?>" class="img-circle elevation-2" alt="User Image">
+          <img src="<?php echo $_SESSION['url_image'] ?>" class="img-circle elevation-2" alt="User Image" style="width: 3.1rem;height: 3.1rem;">
         </div>
         <div class="info">
           <a href="#" class="d-block"><?php echo $nombre_usuario ?></a>
@@ -179,7 +179,7 @@
         <li class="nav-header">Menu</li>
             <li class="nav-item active">
                 <a href="./index.php" class="nav-link active">
-                    <i class="nav-icon fas fa-tasks"></i>
+                    <i class="fa fa-handshake-o" aria-hidden="true"></i>
                     <p>Dashboard</p>
                 </a>
             </li>
